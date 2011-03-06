@@ -7,6 +7,7 @@ import org.neo4j.movies.service.MoviesRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.web.authentication.AuthenticationProcessingFilter;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -50,7 +51,7 @@ public class MovieController {
         Movie movie = moviesRepository.getMovie(id);
         model.addAttribute("movie", movie);
         model.addAttribute("id", id);
-        return "/movies/show.jsp";
+        return "/movies/show";
     }
 
     @RequestMapping(value = "/movies", method = RequestMethod.GET, headers = "Accept=text/html")
@@ -59,7 +60,7 @@ public class MovieController {
         model.addAttribute("movies", movies);
         System.out.println("movies = " + movies);
         model.addAttribute("query", query);
-        return "/movies/list.jsp";
+        return "/movies/list";
     }
 
     @RequestMapping(value = "/actors/{id}", method = RequestMethod.GET, headers = "Accept=text/html")
@@ -67,20 +68,25 @@ public class MovieController {
         Actor actor = moviesRepository.getActor(id);
         model.addAttribute("actor", actor);
         model.addAttribute("id", id);
-        return "/actors/show.jsp";
+        return "/actors/show";
     }
 
-    @RequestMapping(value = "/populate", method = RequestMethod.GET)
+    @RequestMapping(value = "/admin/populate", method = RequestMethod.GET)
     public String populateDatabase(Model model) {
         Collection<Movie> movies=populator.populateDatabase();
         model.addAttribute("movies",movies);
-        return "/movies/list.jsp";
+        return "/movies/list";
     }
 
-    @RequestMapping(value = "/clean", method = RequestMethod.GET)
+    @RequestMapping(value = "/admin/clean", method = RequestMethod.GET)
     public String clean(Model model) {
         populator.cleanDb();
-        return "movies/list.jsp";
+        return "movies/list";
+    }
+
+    @RequestMapping(value = "/", method = RequestMethod.GET)
+    public String index(Model model) {
+        return "index";
     }
 
     /**

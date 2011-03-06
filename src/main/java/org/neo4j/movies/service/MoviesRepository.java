@@ -9,6 +9,10 @@ import org.springframework.data.graph.neo4j.support.GraphDatabaseContext;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 /**
  * @author mh
  * @since 04.03.11
@@ -33,6 +37,19 @@ public class MoviesRepository {
 
     public Movie getMovie(String id) {
         return movieFinder.findByPropertyValue("movies", "id", id);
+    }
+
+    public List<Movie> findMovies(String query, int max) {
+        if (query.isEmpty()) return Collections.emptyList();
+        if (max < 1 || max > 1000) max = 100;
+
+        Iterable<Movie> searchResult = movieFinder.findAllByQuery("search", "title", query);
+        List<Movie> result=new ArrayList<Movie>(max);
+        for (Movie movie : searchResult) {
+            result.add(movie);
+            if (--max == 0) break;
+        }
+        return result;
     }
 
     public Actor getActor(String id) {

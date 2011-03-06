@@ -4,15 +4,20 @@
 
 <h2>Movies</h2>
 
-<c:if test="${not empty movies}">
-<dl class="listings">
-<c:forEach items="${movies}" var="movie">
-	<dt>
-		<a href="/movies/${movie.id}"><c:out value="${movie.title}" /></a><br/>
-	</dt>
-	<dd>
-		<c:out value="${movie.description}" escapeXml="true" />
-	</dd>	
-</c:forEach>
-</dl>
-</c:if>
+<c:choose>
+    <c:when test="${not empty movies}">
+        <dl class="listings">
+        <c:forEach items="${movies}" var="movie">
+            <dt>
+                <a href="/movies/${movie.id}"><c:out value="${movie.title}" /></a><br/>
+            </dt>
+            <dd>
+                <c:out value="${movie.description}" escapeXml="true" />
+            </dd>
+        </c:forEach>
+        </dl>
+    </c:when>
+    <c:otherwise>
+        No movies found for query &quot;${query}&quot;.
+    </c:otherwise>
+</c:choose>

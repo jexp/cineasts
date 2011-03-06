@@ -21,6 +21,7 @@ public class Movie {
     @Indexed(indexName = "movies")
     String id;
 
+    @Indexed(fulltext = true, indexName = "search")
     String title;
 
     String description;

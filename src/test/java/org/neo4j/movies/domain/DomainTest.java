@@ -1,5 +1,6 @@
 package org.neo4j.movies.domain;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +10,11 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Iterator;
+
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author mh
@@ -22,6 +27,12 @@ public class DomainTest {
 
     @Autowired
     FinderFactory finderFactory;
+    protected NodeFinder<Movie> movieFinder;
+
+    @Before
+    public void setUp() throws Exception {
+        movieFinder = finderFactory.createNodeEntityFinder(Movie.class);
+    }
 
     @Test
     public void actorCanPlayARoleInAMovie() {
@@ -31,13 +42,22 @@ public class DomainTest {
 
         Role role = tomHanks.playedIn(forestGump, "Forest");
 
-        NodeFinder<Movie> movieFinder = finderFactory.createNodeEntityFinder(Movie.class);
-        Movie foundForestGump = movieFinder.findByPropertyValue("movies", "id", "1");
+        Movie foundForestGump = this.movieFinder.findByPropertyValue("movies", "id", "1");
 
         assertEquals("created and looked up movie equal", forestGump, foundForestGump);
         Role firstRole = foundForestGump.getRoles().iterator().next();
         assertEquals("role forest",role, firstRole);
         assertEquals("role forest","Forest", firstRole.getName());
+    }
+
+    @Test
+    public void canFindMovieByTitleQuery() {
+        Movie forestGump = new Movie("1", "Forest Gump").persist();
+        Iterator<Movie> queryResults = movieFinder.findAllByQuery("search", "title", "Fore*").iterator();
+        assertTrue("found movie by query",queryResults.hasNext());
+        Movie foundMovie = queryResults.next();
+        assertEquals("created and looked up movie equal", forestGump, foundMovie);
+        assertFalse("found only one movie by query", queryResults.hasNext());
     }
 
     @Test

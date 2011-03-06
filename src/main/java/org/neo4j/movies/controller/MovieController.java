@@ -9,12 +9,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
+import java.util.List;
 
 /**
  * @author mh
@@ -53,6 +51,15 @@ public class MovieController {
         model.addAttribute("movie", movie);
         model.addAttribute("id", id);
         return "/movies/show.jsp";
+    }
+
+    @RequestMapping(value = "/movies", method = RequestMethod.GET, headers = "Accept=text/html")
+    public String findMovies(Model model, @RequestParam("q") String query) {
+        List<Movie> movies = moviesRepository.findMovies(query, 20);
+        model.addAttribute("movies", movies);
+        System.out.println("movies = " + movies);
+        model.addAttribute("query", query);
+        return "/movies/list.jsp";
     }
 
     @RequestMapping(value = "/actors/{id}", method = RequestMethod.GET, headers = "Accept=text/html")

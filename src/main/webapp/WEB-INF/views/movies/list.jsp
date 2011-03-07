@@ -1,8 +1,8 @@
 <%@ page session="false" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="s" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<h2>Movies</h2>
+<h2>Results for &quot;${query}&quot;</h2>
 
 <c:choose>
     <c:when test="${not empty movies}">

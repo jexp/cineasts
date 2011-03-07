@@ -1,0 +1,31 @@
+#container {
+}
+#content {
+    position:relative;
+    left: 25%;
+    width: 50%;
+    right: 25%;
+}
+#content div {
+}
+
+#footer {
+    font-size:0.7em;
+    text-align:center;
+}
+
+#content h2, h3 {
+    text-align:center;
+}
+
+.listings {
+
+}
+.navigation {
+    font-size: 0.8em;
+    font-variant: small-caps;
+}
+body {
+    font-family: Verdana, sans-serif ;
+    min-height:100%;
+}

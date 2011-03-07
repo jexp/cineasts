@@ -33,10 +33,10 @@ public class DatabasePopulator {
         forestGump.setYear(1994);
         tomHanks.playedIn(forestGump,"Forest");
 
-        User me = new User("micha", "Micha", "password").persist();
+        User me = new User("micha", "Micha", "password", User.Roles.ROLE_ADMIN,User.Roles.ROLE_USER).persist();
         Rating awesome = me.rate(forestGump, 5, "Awesome");
 
-        User ollie = new User("ollie", "Olliver", "password").persist();
+        User ollie = new User("ollie", "Olliver", "password",User.Roles.ROLE_USER).persist();
         ollie.rate(forestGump, 2, "ok");
         me.addFriend(ollie);
         return asList(forestGump);

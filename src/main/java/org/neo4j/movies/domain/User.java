@@ -5,28 +5,34 @@ import org.springframework.data.annotation.Indexed;
 import org.springframework.data.graph.annotation.NodeEntity;
 import org.springframework.data.graph.annotation.RelatedTo;
 import org.springframework.data.graph.annotation.RelatedToVia;
+import org.springframework.data.graph.core.Direction;
+import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
+import org.springframework.security.core.GrantedAuthority;
 
 import java.util.Collection;
 import java.util.Set;
 
-/**
- * @author mh
- * @since 04.03.11
- */
 @NodeEntity
 public class User {
+    private static final String SALT = "cewuiqwzie";
     @Indexed(indexName = "users")
     String login;
     String name;
     String password;
+    private Roles[] roles;
 
     public User() {
     }
 
-    public User(String login, String name, String password) {
+    public User(String login, String name, String password, Roles... roles) {
         this.login = login;
         this.name = name;
-        this.password = password;
+        this.password = encode(password);
+        this.roles = roles;
+    }
+
+    private String encode(String password) {
+        return new Md5PasswordEncoder().encodePassword(password, SALT);
     }
 
     @RelatedToVia(elementClass = Rating.class, type = "RATED")
@@ -36,7 +42,7 @@ public class User {
     Set<Movie> favorites;
 
 
-    @RelatedTo(elementClass = User.class, type = "FRIEND")
+    @RelatedTo(elementClass = User.class, type = "FRIEND", direction = Direction.BOTH)
     Set<User> friends;
 
     public void addFriend(User friend) {
@@ -44,7 +50,7 @@ public class User {
     }
 
     public Rating rate(Movie movie, int stars, String comment) {
-        return relateTo(movie, Rating.class, "RATED").rate(stars,comment);
+        return relateTo(movie, Rating.class, "RATED").rate(stars, comment);
     }
 
     public Collection<Rating> getRatings() {
@@ -62,5 +68,41 @@ public class User {
 
     public Set<User> getFriends() {
         return friends;
+    }
+
+    public Roles[] getRole() {
+        return roles;
+    }
+
+
+    public String getLogin() {
+        return login;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void updatePassword(String old, String newPass1, String newPass2) {
+        if (!password.equals(encode(old))) throw new IllegalArgumentException("Existing Password invalid");
+        if (!newPass1.equals(newPass2)) throw new IllegalArgumentException("New Passwords don't match");
+        this.password = encode(newPass1);
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public boolean isFriend(User other) {
+        return other!=null && getFriends().contains(other);
+    }
+
+    public enum Roles implements GrantedAuthority {
+        ROLE_USER, ROLE_ADMIN;
+
+        @Override
+        public String getAuthority() {
+            return name();
+        }
     }
 }

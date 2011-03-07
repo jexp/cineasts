@@ -4,8 +4,23 @@
 
 <c:out value="${movie}"/>
 <c:choose>
-    <c:when test="${movie != null}">
+    <c:when test="${not empty movie}">
         <h2>${movie.title} (${movie.stars} Stars)</h2>
+
+        <c:if test="${not empty user}">
+        <div>
+            <form method="post" action="/movies/${movie.id}">
+                <div>
+                <input type="image" src="/images/star.png" name="rated" value="1"/>
+                <input type="image" src="/images/star.png" name="rated" value="2"/>
+                <input type="image" src="/images/star.png" name="rated" value="3"/>
+                <input type="image" src="/images/star.png" name="rated" value="4"/>
+                <input type="image" src="/images/star.png" name="rated" value="5"/>
+                </div>
+                <textarea rows="3" cols="60" name="comment"></textarea>
+            </form>
+        </div>
+        </c:if>
         <c:if test="${not empty movie.roles}">
         <ul>
         <c:forEach items="${movie.roles}" var="role">

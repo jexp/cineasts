@@ -2,6 +2,8 @@ package org.neo4j.movies.service;
 
 import org.neo4j.movies.domain.Actor;
 import org.neo4j.movies.domain.Movie;
+import org.neo4j.movies.domain.Rating;
+import org.neo4j.movies.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.graph.neo4j.finder.FinderFactory;
 import org.springframework.data.graph.neo4j.finder.NodeFinder;
@@ -54,5 +56,10 @@ public class MoviesRepository {
 
     public Actor getActor(String id) {
         return actorFinder.findByPropertyValue("actors","id",id);
+    }
+
+    public Rating rateMovie(Movie movie, User user, int stars, String comment) {
+        if (user == null || movie==null) return null;
+        return user.rate(movie, stars,comment);
     }
 }

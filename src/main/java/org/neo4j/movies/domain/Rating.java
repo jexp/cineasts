@@ -11,6 +11,9 @@ import org.springframework.persistence.RelatedEntity;
  */
 @RelationshipEntity
 public class Rating {
+    private static final int MAX_STARS = 5;
+    private static final int MIN_STARS = 0;
+
     @StartNode
     User user;
     @EndNode Movie movie;
@@ -43,8 +46,8 @@ public class Rating {
     }
 
     public Rating rate(int stars, String comment) {
-        this.stars=stars;
-        this.comment = comment;
+        if (stars>= MIN_STARS && stars <= MAX_STARS) this.stars=stars;
+        if (comment!=null && !comment.isEmpty()) this.comment = comment;
         return this;
     }
 }

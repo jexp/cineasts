@@ -8,6 +8,7 @@
         </c:when>
         <c:otherwise>
             <a href="/user/${user.login}">${user.name}</a>
+            <a href="/auth/logout">Logout</a>
         </c:otherwise>
     </c:choose>
 </div>

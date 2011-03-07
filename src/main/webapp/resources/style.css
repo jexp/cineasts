@@ -9,6 +9,9 @@
 #content div {
 }
 
+img {
+    border: none;
+}
 #footer {
     font-size:0.7em;
     text-align:center;

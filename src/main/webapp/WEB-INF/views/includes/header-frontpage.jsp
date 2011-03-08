@@ -6,5 +6,7 @@
 		<%@ include file="/WEB-INF/views/includes/user.jsp" %>
 		<%@ include file="/WEB-INF/views/includes/search.jsp" %>
 	</div>
-	<a href="/" id="logo"><img src="<c:url value="/images/cineasts.png"/>" /></a>
+	<div id="header-splash">
+		<img id="logo-splash" src="<c:url value="/images/logo-splash.png"/>" />
+	</div>
 </div>

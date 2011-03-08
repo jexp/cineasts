@@ -1,0 +1,13 @@
+
+body {
+	font-family:tahoma,verdana,sans-serif,serif;
+}
+
+.tiny-link {	
+	color: #222;
+	font-size:12px;
+	text-decoration:none;
+}
+.tiny-link:hover {
+	text-decoration:underline;	
+}

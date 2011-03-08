@@ -6,4 +6,6 @@
 target
 *.log
 tmp
-
+.classpath
+.project
+.settings

@@ -12,8 +12,14 @@
 	    <%@ include file="/WEB-INF/views/includes/js.jsp" %>
 	</head>
 	<body>
-	    <%@ include file="/WEB-INF/views/includes/header.jsp" %>
+	    <%@ include file="/WEB-INF/views/includes/header-frontpage.jsp" %>
 	    <div id="content">
+	       	<div id="big-search-wrap">
+		        <form action="#">
+			        <input type="text" class="big-search" name="search" />
+			        <input type="submit" class="big-search-submit" value="Search"/>
+		        </form>
+	        </div>
             <decorator:body />
 	    </div>
 	    <%@ include file="/WEB-INF/views/includes/footer.jsp" %>

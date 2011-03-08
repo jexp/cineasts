@@ -2,10 +2,9 @@
 <%@ taglib uri="http://www.springframework.org/tags" prefix="s" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<c:out value="${movie}"/>
 <c:choose>
     <c:when test="${not empty movie}">
-        <h2>${movie.title} (${movie.stars} Stars)</h2>
+        <h2>${movie.title} (${movie.year}) has ${movie.stars} Stars</h2>
 
         <c:if test="${not empty user}">
         <div>

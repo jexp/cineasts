@@ -15,8 +15,8 @@
 	    <%@ include file="/WEB-INF/views/includes/header-frontpage.jsp" %>
 	    <div id="content">
 	       	<div id="big-search-wrap">
-		        <form action="#">
-			        <input type="text" class="big-search" name="search" />
+		        <form action="/movies" method="get">
+			        <input type="text" class="big-search" name="q" />
 			        <input type="submit" class="big-search-submit" value="Search"/>
 		        </form>
 	        </div>

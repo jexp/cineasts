@@ -3,8 +3,10 @@
 
 <div id="header">
 	<div id="header-topbar">
-		<%@ include file="/WEB-INF/views/includes/user.jsp" %>
-		<%@ include file="/WEB-INF/views/includes/search.jsp" %>
+	    <div id="header-menu">
+			<%@ include file="/WEB-INF/views/includes/search.jsp" %>
+			<%@ include file="/WEB-INF/views/includes/navigation.jsp" %>
+		</div>
 	</div>
 	<div id="header-splash">
 		<img id="logo-splash" src="<c:url value="/images/logo-splash.png"/>" />

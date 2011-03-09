@@ -1,11 +1,17 @@
 
 @import url(typography.css);
 
+* {
+  outline-style: none;
+}
+
 body { 
 	margin:0; 
 	padding:0; 
 	background : #010100; 
 }
+
+a img { border:0; }
 
 /**
  * MAIN COMPONENTS
@@ -13,11 +19,16 @@ body {
 
 #header {
 	background: url(../images/header-curtain.png) repeat-y bottom center #010100;	
+  border-bottom: 1px solid #5C5C45;
+}
+
+#logo img {
+  padding: 10px 10px 0;
 }
 
 #header-topbar {
 	height: 49px;
-	padding: 0 10px;
+	padding: 0 0 0 10px;
 	background: url(../images/filmroll-horizontal.png) repeat-x bottom left transparent;	
 }
 
@@ -32,17 +43,37 @@ body {
 }
 
 
-#account-menu {
+#header-menu {
 	float: right;
-  list-style: none outside none;
-  padding: 10px 10px 0;
-  margin:0;
+  color: #DDDDDD;
+  height:28px;
+  background:#0b0f07;
+  padding: 10px 10px;
 }
 
-#account-menu li {
-	display:block;
-	float:left;	    
-	padding-left: 5px;
+.search {
+  float:left;
+  padding:0 10px;
+}
+
+.navigation {
+  float:left;
+}
+
+.navigation a {
+  color: #d8d8d8;
+  text-decoration:none;
+  padding: 0 0 0 5px;
+}
+
+#content {
+  padding: 10px;
+}
+
+#footer {
+  color: #999999;
+  font-size: 12px;
+  padding: 10px;
 }
 
 /**

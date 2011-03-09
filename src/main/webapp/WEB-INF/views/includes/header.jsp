@@ -3,8 +3,10 @@
 
 <div id="header">
 	<div id="header-topbar">
-		<%@ include file="/WEB-INF/views/includes/user.jsp" %>
-		<%@ include file="/WEB-INF/views/includes/search.jsp" %>
+	    <div id="header-menu">
+			<%@ include file="/WEB-INF/views/includes/search.jsp" %>
+			<%@ include file="/WEB-INF/views/includes/navigation.jsp" %>
+		</div>
 	</div>
-	<a href="/" id="logo"><img src="<c:url value="/images/cineasts.png"/>" /></a>
+	<a href="/" id="logo"><img src="<c:url value="/images/logo.png"/>" /></a>
 </div>

@@ -1,5 +1,6 @@
 
 @import url(typography.css);
+@import url(forms.css);
 
 * {
   outline-style: none;
@@ -103,4 +104,12 @@ a img { border:0; }
   left: -75px;
   position: relative;
   width: 41px;
+}
+
+/** 
+ * ERRORS
+ */
+
+.error {
+  color:red;
 }

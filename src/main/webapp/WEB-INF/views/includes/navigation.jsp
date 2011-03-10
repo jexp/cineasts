@@ -4,11 +4,11 @@
 <div class="navigation">
     <c:choose>
         <c:when test="${empty user}">
-            <a href="/auth/login">Login</a>
+            <a href="<c:url value="/auth/login" />">Login</a>
         </c:when>
         <c:otherwise>
-            <a href="/user/${user.login}">${user.name}</a>
-            <a href="/auth/logout">Logout</a>
+            <a href="<c:url value="/user/${user.login}" />">${user.name}</a>
+            <a href="<c:url value="/auth/logout" />">Logout</a>
         </c:otherwise>
     </c:choose>
 </div>

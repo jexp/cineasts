@@ -28,5 +28,20 @@
         You are not a friend of ${name}
     </c:otherwise>
 </c:choose>
+<c:set var="ratings" value="${profiled.ratings}"/>
+<c:choose>
+    <c:when test="${not empty ratings}">
+        <h4>${name} rated these movies:</h4>
+        <ul>
+            <c:forEach items="${ratings}" var="rating">
+                <c:set var="movie" value="${rating.movie}"/>
+                <li><a href="/movies/${movie.id}"><c:out value="${movie.title}"/> (${movie.year}) ${rating.stars} Stars - &quot;${rating.comment}&quot;</a></li>
+            </c:forEach>
+        </ul>
+    </c:when>
+    <c:otherwise>
+        ${name} has not rated any movies.
+    </c:otherwise>
+</c:choose>
 </body>
 </html>

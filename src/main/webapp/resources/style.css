@@ -1,6 +1,7 @@
 
 @import url(typography.css);
 @import url(forms.css);
+@import url(grid.css);
 
 * {
   outline-style: none;
@@ -75,6 +76,100 @@ a img { border:0; }
   color: #999999;
   font-size: 12px;
   padding: 10px;
+  clear:both;
+}
+
+/**
+ * PROFILE, ACTOR AND MOVIE PAGES 
+ */
+
+.profile-header {
+  clear:both;
+}
+
+.profile-image {
+  float:left;
+}
+
+.actor-image img, .profile-image img, .friend-image img {
+  border: 1px solid #4C5C2A !important;
+}
+
+.profile-header-details {
+  float: left;
+  padding: 0 10px;
+}
+
+.profile-feed {
+  background: none repeat scroll 0 0 #252525;
+  border: 5px solid #CACF81;
+  padding: 10px;
+} 
+
+.facts {
+  width:50%;
+  float:left;
+}
+
+.movie-content-outer {
+  background: url(../images/filmroll-vertical-full.png) no-repeat top right;
+  padding-right: 38px;
+}
+
+.movie-content {
+  background: url(../images/filmroll-vertical-full.png) no-repeat top left;
+  padding: 0 10px 0 48px;
+  min-height:690px;
+}
+
+.actors-list li {
+  width:100px;
+  float:left;
+}
+
+.friends-list li {
+  border-top:1px solid #333;
+  padding: 5px 0;
+}
+
+.friends-list .friend-image {
+  float:left;
+}
+
+.friends-list .friend-info {
+  float:left;
+  padding: 0 5px;
+}
+
+.friends-list h3 {
+  border:none;
+}
+
+.friends-list h3 a {
+  text-decoration:none;
+  color: #ff6600;
+}
+
+.rated-movies-list h3 {
+  margin: 0;
+  padding: 5px 0;
+}
+
+.rated-movies-list h3 a {
+  color: #99CC33;
+  text-decoration:none;
+}
+
+.rated-movies-list li {
+  position:relative;
+  height:20px;
+  padding:8px 0;
+}
+
+.rated-movies-list .rating {
+  position:absolute;
+  right:0;
+  top:5px;
 }
 
 /**
@@ -105,6 +200,66 @@ a img { border:0; }
   position: relative;
   width: 41px;
 }
+
+/**
+ * RATINGS
+ */
+
+.rating-input li, .rating-input lh {
+  float:left;
+}
+
+.rating {
+  display: block;
+  height: 20px;
+  width: 130px;
+}
+
+.rating li {
+  height: 28px;
+  width: 22px;
+  display:block;
+  float:left;
+  padding:0 2px;
+}
+
+.rating li.active {
+  background: url("/images/rating-active.png") no-repeat scroll center 0 transparent;
+}
+
+.rating li.disabled {
+  background: url("/images/rating-disabled.png") no-repeat scroll center 0 transparent;
+}
+
+/**
+ * TABLES
+ */
+
+table th {
+  text-align: left;
+}
+
+/**
+ * LISTS
+ */
+
+ul {
+  list-style:none;
+  padding:0;
+}
+
+lh {
+  font-weight:bold;
+}
+
+/**
+ * UTILS
+ */
+
+.break {
+  clear:both;
+}
+
 
 /** 
  * ERRORS

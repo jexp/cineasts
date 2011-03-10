@@ -3,7 +3,7 @@
 <%--@elvariable id="user" type="org.neo4j.movies.domain.User"--%>
 <c:set var="name" value="${profiled.name}"/>
 <html>
-  <head><title>Profile Page of ${name}</title></head>
+  <head><title>Profile for ${name}</title></head>
   <body>
 
     <div class="span-5">
@@ -79,6 +79,6 @@
         </ul>
         <div class="break"></div>
       </div>
-    </div>   
+    </div>
   </body>
 </html>

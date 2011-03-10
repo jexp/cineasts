@@ -95,6 +95,17 @@ a img { border:0; }
   border: 1px solid #4C5C2A !important;
 }
 
+.actor-framed-image {
+  background: url(../images/actor-picture-frame.png) no-repeat;
+  width:166px;
+  height:214px;
+  padding: 6px 60px 16px;
+}
+
+.actor-sidebar {
+  padding: 0 56px;
+}
+
 .profile-header-details {
   float: left;
   padding: 0 10px;
@@ -111,12 +122,12 @@ a img { border:0; }
   float:left;
 }
 
-.movie-content-outer {
+.movie-content-outer, .actor-content-outer {
   background: url(../images/filmroll-vertical-full.png) no-repeat top right;
   padding-right: 38px;
 }
 
-.movie-content {
+.movie-content, .actor-content {
   background: url(../images/filmroll-vertical-full.png) no-repeat top left;
   padding: 0 10px 0 48px;
   min-height:690px;

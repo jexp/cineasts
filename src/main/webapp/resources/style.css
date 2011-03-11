@@ -80,6 +80,24 @@ a img { border:0; }
 }
 
 /**
+ * SEARCH RESULTS
+ */
+
+.search-results > li {
+  border-top: 1px solid #666666;
+  padding: 10px;
+}
+
+.search-result-details {
+  float:left;
+  padding: 0 10px;
+}
+
+.search-results .rating {
+  float:right;
+}
+
+/**
  * PROFILE, ACTOR AND MOVIE PAGES 
  */
 
@@ -91,8 +109,13 @@ a img { border:0; }
   float:left;
 }
 
-.actor-image img, .profile-image img, .friend-image img {
+.actor-image img, .profile-image img, .friend-image img, .thumbnail img {
   border: 1px solid #4C5C2A !important;
+}
+
+.thumbnail {
+  display:block;
+  float:left;
 }
 
 .actor-framed-image {
@@ -152,21 +175,22 @@ a img { border:0; }
   padding: 0 5px;
 }
 
-.friends-list h3 {
+.friends-list h3, .search-results h3 {
   border:none;
+  margin: 5px 0;
 }
 
-.friends-list h3 a {
+.friends-list h3 a, .search-results h3 a {
   text-decoration:none;
   color: #ff6600;
 }
 
-.rated-movies-list h3 {
+.rated-movies-list h3, .search-results h3 a {
   margin: 0;
   padding: 5px 0;
 }
 
-.rated-movies-list h3 a {
+.rated-movies-list h3 a
   color: #99CC33;
   text-decoration:none;
 }

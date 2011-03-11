@@ -14,19 +14,18 @@
         <div class="break"></div>
       </div>
       <div class="span-8 last">
-        <div class="actor-content-outer">
-          <div class="actor-content">
-            <c:if test="${not empty actor.roles}">
-              <ul>
-                <c:forEach items="${actor.roles}" var="role">
-                  <li>
-                    <a href="/movies/${role.movie.id}"><c:out value="${role.movie.title}" /> as <c:out value="${role.name}" /> in <c:out value="${role.movie.year}"/></a><br/>
-                  </li>
-                </c:forEach>
-              </ul>
-            </c:if>
-          </div>
-        </div>
+        <h2>Biography</h2>
+        <p>Actor biography goes here.</p>
+        <h2>Roles</h2>
+        <c:if test="${not empty actor.roles}">
+          <ul>
+            <c:forEach items="${actor.roles}" var="role">
+              <li>
+                <a href="/movies/${role.movie.id}"><c:out value="${role.movie.title}" /> as <c:out value="${role.name}" /> in <c:out value="${role.movie.year}"/></a><br/>
+              </li>
+            </c:forEach>
+          </ul>
+        </c:if>
       </div>
     </c:when>
     <c:otherwise>

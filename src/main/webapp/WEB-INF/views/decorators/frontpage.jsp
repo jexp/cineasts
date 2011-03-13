@@ -12,14 +12,17 @@
 	    <%@ include file="/WEB-INF/views/includes/js.jsp" %>
 	</head>
 	<body>
-	    <%@ include file="/WEB-INF/views/includes/header-frontpage.jsp" %>
-	    <div id="content">
-	       	<div id="big-search-wrap">
-		        <form action="/movies" method="get">
-			        <input type="text" class="big-search" name="q" value="Find movie" onfocus="this.value='';" onblur="this.value = (this.value=='') ? 'Find movie' : this.value;" />
-			        <input type="submit" class="big-search-submit" value="Search"/>
-		        </form>
-	        </div>
+		<div id="header">
+			<div id="header-topbar">
+			    <div id="header-menu">
+					<%@ include file="/WEB-INF/views/includes/navigation.jsp" %>
+				</div>
+			</div>
+			<div id="header-splash">
+				<img id="logo-splash" src="<c:url value="/images/logo-splash.png"/>" />
+			</div>
+		</div>
+		<div id="content">
             <decorator:body />
 	    </div>
 	    <%@ include file="/WEB-INF/views/includes/footer.jsp" %>

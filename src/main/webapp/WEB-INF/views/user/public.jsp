@@ -11,7 +11,7 @@
         <div class="profile-image"><img src="<c:url value="/images/profile-placeholder.png" />" /></div>
         <div class="profile-header-details">          
           <h2>${name}</h2>
-          <p>User description goes here.</p>
+          <p>${profiled.info}</p>
         </div>
         <div class="break"></div>
       </div>
@@ -28,7 +28,7 @@
                     <a class="friend-image" href="<c:url value="/user/${friend.login}" />"><img src="<c:url value="/images/profile-placeholder-small.png" />" /></a>
                     <div class="friend-info">                    
                       <h3><a href="<c:url value="/user/${friend.login}" />"><c:out value="${friend.name}"/></a></h3>
-                      <p>Description of friend</p>
+                      <p>${friend.info}</p>
                     </div>
                     <div class="break"></div>
                   </li>
@@ -41,7 +41,9 @@
           </c:choose>
         </c:when>
         <c:otherwise>
-          You are not a friend of ${name}
+		  <form action="/user/${profiled.login}/friends" method="post">
+          	<a href="#" onClick="form.submit();return false;">Add ${name} as a friend.</a>
+		  </form>
         </c:otherwise>
       </c:choose>
     </div>
@@ -60,7 +62,7 @@
                         <c:forEach items="${ratings}" var="rating">
                             <c:set var="movie" value="${rating.movie}"/>
           <li>
-              <h3><a href="<c:url value="/movies/${movie.id}" />"><c:out value="${movie.title}"/> (${movie.year}) ${rating.stars} Stars - &quot;${rating.comment}&quot;</a></h3>
+              <h3><a href="<c:url value="/movies/${movie.id}" />"><c:out value="${movie.title}"/> (${movie.year}) - &quot;${rating.comment}&quot;</a></h3>
               <ul class="rating">
                 <!-- Add a loop here -->
                 <c:set var="stars" value="${rating.stars}"/>

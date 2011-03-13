@@ -12,7 +12,7 @@
         <div class="profile-image"><img src="<c:url value="/images/profile-placeholder.png" />" /></div>
         <div class="profile-header-details">          
           <h2>Hi ${user.name}!</h2>
-          <p>User description goes here.</p>
+          <p>${user.info}</p>
         </div>
         <div class="break"></div>
       </div>
@@ -26,7 +26,7 @@
                 <a class="friend-image" href="<c:url value="/user/${friend.login}" />"><img src="<c:url value="/images/profile-placeholder-small.png" />" /></a>
                 <div class="friend-info">                    
                   <h3><a href="<c:url value="/user/${friend.login}" />"><c:out value="${friend.name}"/></a></h3>
-                  <p>Description of friend</p>
+                  <p>${friend.info}</p>
                 </div>
                 <div class="break"></div>
               </li>
@@ -45,7 +45,7 @@
           <h2>Your rated movies</h2>
         </div>
         <div class="span-third last">
-          <h2>12</h2>
+          <h2>${fn:length(ratings)}</h2>
         </div>
         <ul class="rated-movies-list span-all last">
 <c:choose>
@@ -53,7 +53,7 @@
             <c:forEach items="${ratings}" var="rating">
                 <c:set var="movie" value="${rating.movie}"/>
           <li>
-              <h3><a href="<c:url value="/movies/${movie.id}" />"><c:out value="${movie.title}"/> (${movie.year}) ${rating.stars} Stars - &quot;${rating.comment}&quot;</a></h3>
+              <h3><a href="<c:url value="/movies/${movie.id}" />"><c:out value="${movie.title}"/> (${movie.year}) - &quot;${rating.comment}&quot;</a></h3>
                 <ul class="rating">
                   <!-- Add a loop here -->
                   <c:set var="stars" value="${rating.stars}"/>

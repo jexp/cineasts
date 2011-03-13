@@ -6,12 +6,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.graph.neo4j.finder.FinderFactory;
 import org.springframework.data.graph.neo4j.finder.NodeFinder;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author mh
@@ -41,11 +44,29 @@ public class CineastsUserDetailsService implements UserDetailsService, Initializ
 
 
     public User getUserFromSession() {
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        SecurityContext context = SecurityContextHolder.getContext();
+        Authentication authentication = context.getAuthentication();
+        Object principal = authentication.getPrincipal();
         if (principal instanceof CineastsUserDetails) {
             CineastsUserDetails userDetails = (CineastsUserDetails) principal;
             return userDetails.getUser();
         }
         return null;
+    }
+
+    @Transactional
+    public User register(String login, String name, String password) {
+        User found = findUser(login);
+        if (found!=null) throw new RuntimeException("Login already taken: "+login);
+        if (name==null || name.isEmpty()) throw new RuntimeException("No name provided.");
+        if (password==null || password.isEmpty()) throw new RuntimeException("No password provided.");
+        User user=new User(login,name,password,User.Roles.ROLE_USER).persist();
+        setUserInSession(user);
+        return user;
+    }
+
+    private void setUserInSession(User user) {
+        SecurityContext context = SecurityContextHolder.getContext();
+        context.setAuthentication(new UsernamePasswordAuthenticationToken(user.getLogin(),user.getPassword()));
     }
 }

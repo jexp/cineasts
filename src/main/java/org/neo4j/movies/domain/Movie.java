@@ -9,7 +9,10 @@ import org.springframework.data.graph.core.Direction;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Date;
 import java.util.Set;
+
+import static org.springframework.data.graph.core.Direction.INCOMING;
 
 /**
  * @author mh
@@ -28,14 +31,30 @@ public class Movie {
 
     int year;
 
-    @RelatedTo(elementClass = Actor.class, type = "ACTS_IN", direction = Direction.INCOMING)
+    @RelatedTo(type="DIRECTED", direction = INCOMING)
+
+    Director director;
+
+    @RelatedTo(elementClass = Actor.class, type = "ACTS_IN", direction = INCOMING)
     Set<Actor> actors;
 
-    @RelatedToVia(elementClass = Role.class, type = "ACTS_IN", direction = Direction.INCOMING)
+    @RelatedToVia(elementClass = Role.class, type = "ACTS_IN", direction = INCOMING)
     Iterable<Role> roles;
 
-    @RelatedToVia(elementClass = Rating.class, type = "RATED", direction = Direction.INCOMING)
+    @RelatedToVia(elementClass = Rating.class, type = "RATED", direction = INCOMING)
     Iterable<Rating> ratings;
+    private String language;
+    private String imdbId;
+    private String tagline;
+    private Date releaseDate;
+    private Integer runtime;
+    private String homepage;
+    private String trailer;
+    private String genre;
+    private String studio;
+    private Integer version;
+    private Date lastModified;
+    private String imageUrl;
 
     public Movie() {
     }
@@ -93,6 +112,114 @@ public class Movie {
     public Collection<Rating> getRatings() {
         Iterable<Rating> allRatings = ratings;
         return allRatings == null ? Collections.<Rating>emptyList() : IteratorUtil.asCollection(allRatings);
+    }
+
+    public Director getDirector() {
+        return director;
+    }
+
+    public void setTitle(String title) {
+        this.title=title;
+    }
+
+    public void setLanguage(String language) {
+        this.language = language;
+    }
+
+    public void setImdbId(String imdbId) {
+        this.imdbId = imdbId;
+    }
+
+    public void setTagline(String tagline) {
+        this.tagline = tagline;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setReleaseDate(Date releaseDate) {
+        this.releaseDate = releaseDate;
+    }
+
+    public void setRuntime(Integer runtime) {
+        this.runtime = runtime;
+    }
+
+    public void setHomepage(String homepage) {
+        this.homepage = homepage;
+    }
+
+    public void setTrailer(String trailer) {
+        this.trailer = trailer;
+    }
+
+    public void setGenre(String genre) {
+        this.genre = genre;
+    }
+
+    public void setStudio(String studio) {
+        this.studio = studio;
+    }
+
+    public void setVersion(Integer version) {
+        this.version = version;
+    }
+
+    public void setLastModified(Date lastModified) {
+        this.lastModified = lastModified;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+    public String getLanguage() {
+        return language;
+    }
+
+    public String getImdbId() {
+        return imdbId;
+    }
+
+    public String getTagline() {
+        return tagline;
+    }
+
+    public Date getReleaseDate() {
+        return releaseDate;
+    }
+
+    public Integer getRuntime() {
+        return runtime;
+    }
+
+    public String getHomepage() {
+        return homepage;
+    }
+
+    public String getTrailer() {
+        return trailer;
+    }
+
+    public String getGenre() {
+        return genre;
+    }
+
+    public String getStudio() {
+        return studio;
+    }
+
+    public Integer getVersion() {
+        return version;
+    }
+
+    public Date getLastModified() {
+        return lastModified;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
     }
 }
 

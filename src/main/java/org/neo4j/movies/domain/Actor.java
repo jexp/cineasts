@@ -8,32 +8,14 @@ import org.springframework.data.graph.annotation.RelatedToVia;
  * @author mh
  * @since 04.03.11
  */
-@NodeEntity
-public class Actor {
+public class Actor extends Person {
 
-    @Indexed(indexName = "actors")
-    String id;
-    String name;
 
     public Actor() {
     }
 
     public Actor(String id, String name) {
-        this.id = id;
-        this.name = name;
-    }
-
-    @Override
-    public String toString() {
-        return String.format("%s [%s]", name, id);
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
+        super(id,name);
     }
 
     @RelatedToVia(elementClass = Role.class, type = "ACTS_IN")

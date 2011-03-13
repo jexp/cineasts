@@ -182,15 +182,16 @@ a img { border:0; }
 
 .friends-list h3 a, .search-results h3 a {
   text-decoration:none;
-  color: #ff6600;
+  color: #99CC33;
 }
 
 .rated-movies-list h3, .search-results h3 a {
   margin: 0;
   padding: 5px 0;
+  float: left;
 }
 
-.rated-movies-list h3 a
+.rated-movies-list h3 a {
   color: #99CC33;
   text-decoration:none;
 }
@@ -202,9 +203,11 @@ a img { border:0; }
 }
 
 .rated-movies-list .rating {
-  position:absolute;
+/*  position:absolute;
   right:0;
   top:5px;
+*/
+  float: right;
 }
 
 /**
@@ -263,7 +266,7 @@ a img { border:0; }
 }
 
 .rating li.disabled {
-  background: url("/images/rating-disabled.png") no-repeat scroll center 0 transparent;
+/*  background: url("/images/rating-disabled.png") no-repeat scroll center 0 transparent; */
 }
 
 /**
@@ -302,4 +305,9 @@ lh {
 
 .error {
   color:red;
+}
+
+a {
+	text-decoration: none;
+	color: #99CC33;
 }

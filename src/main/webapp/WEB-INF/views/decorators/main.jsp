@@ -12,7 +12,17 @@
 	    <%@ include file="/WEB-INF/views/includes/js.jsp" %>
 	</head>
 	<body>
-	    <%@ include file="/WEB-INF/views/includes/header.jsp" %>
+		<div id="header">
+			<div id="header-topbar">
+			    <div id="header-menu">
+					<page:applyDecorator name="header_search">
+						<%@ include file="/WEB-INF/views/includes/search.jsp" %>
+					</page:applyDecorator>
+					<%@ include file="/WEB-INF/views/includes/navigation.jsp" %>
+				</div>
+			</div>
+			<a href="/" id="logo"><img src="<c:url value="/images/logo.png"/>" /></a>
+		</div>
 	    <div id="content">
             <decorator:body />
 	    </div>

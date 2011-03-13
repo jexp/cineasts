@@ -6,13 +6,13 @@ body {
 }
 
 h2 {
-  color: #99CC33;
+  color: #314718; /*#99CC33;*/
   font-size: 16px;
   text-transform: uppercase;
 }
 
 h3 {
-  color: #ff6600;
+  color: #314718; /*#ff6600;*/
   font-size: 14px;
   text-transform: uppercase;
   border-bottom: 1px solid #333333;

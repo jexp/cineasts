@@ -16,21 +16,22 @@ pageEncoding="UTF-8"%>
 		<h1>Login</h1>
 		<div class="error">${error}</div>
 		
-		<form action="/j_spring_security_check" method="post" >
+		<form action="/user/register" method="post" >
       <p>
         <label for="j_username">Login:</label>
-        <input id="j_username" name="j_username" type="text"
-          <c:if test="${not empty param.login_error}">value="${sessionScope['SPRING_SECURITY_LAST_USERNAME']}"</c:if>  />
+        <input id="j_username" name="j_username" type="text" value=""/>
+      </p>
+      <p>
+        <label for="j_displayname">Name:</label>
+        <input id="j_displayname" name="j_displayname" type="text" value=""/>
       </p>
       <p>
         <label for="j_password">Password:</label>
         <input id="j_password" name="j_password" type="password" />
       </p>
-      <p>
-        <input type="checkbox" name="_spring_security_remember_me"/> Remember me
-      </p>
-      <input  type="submit" value="Login"/>
-    </form><br/>
-    <a href="/auth/registerpage">Register</a>
+      <input  type="submit" value="Register"/>
+    </form>
+    <br/>
+    <a href="/auth/loginpage">Login</a>
 	</body>
 </html>

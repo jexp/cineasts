@@ -1,9 +1,6 @@
 package org.neo4j.movies.service;
 
-import org.neo4j.movies.domain.Actor;
-import org.neo4j.movies.domain.Movie;
-import org.neo4j.movies.domain.Rating;
-import org.neo4j.movies.domain.User;
+import org.neo4j.movies.domain.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.graph.neo4j.finder.FinderFactory;
 import org.springframework.data.graph.neo4j.finder.NodeFinder;
@@ -25,7 +22,7 @@ public class MoviesRepository {
 
     private FinderFactory finderFactory;
     private GraphDatabaseContext graphDatabaseContext;
-    protected NodeFinder<Actor> actorFinder;
+    protected NodeFinder<Person> peopleFinder;
     protected NodeFinder<Movie> movieFinder;
 
     @Autowired
@@ -33,7 +30,7 @@ public class MoviesRepository {
         this.finderFactory = finderFactory;
         this.graphDatabaseContext = graphDatabaseContext;
         movieFinder = finderFactory.createNodeEntityFinder(Movie.class);
-        actorFinder = finderFactory.createNodeEntityFinder(Actor.class);
+        peopleFinder = finderFactory.createNodeEntityFinder(Person.class);
 
     }
 
@@ -54,8 +51,8 @@ public class MoviesRepository {
         return result;
     }
 
-    public Actor getActor(String id) {
-        return actorFinder.findByPropertyValue("actors","id",id);
+    public Person getPerson(String id) {
+        return peopleFinder.findByPropertyValue("people","id",id);
     }
 
     public Rating rateMovie(Movie movie, User user, int stars, String comment) {

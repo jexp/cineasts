@@ -19,6 +19,7 @@ public class User {
     String login;
     String name;
     String password;
+    String info;
     private Roles[] roles;
 
     public User() {
@@ -83,6 +84,12 @@ public class User {
         return password;
     }
 
+	public String getInfo() {
+		return info;
+	}
+	public void setInfo(String info) {
+		this.info = info;
+	}
     public void updatePassword(String old, String newPass1, String newPass2) {
         if (!password.equals(encode(old))) throw new IllegalArgumentException("Existing Password invalid");
         if (!newPass1.equals(newPass2)) throw new IllegalArgumentException("New Passwords don't match");

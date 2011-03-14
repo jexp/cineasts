@@ -26,6 +26,13 @@
         <constructor-arg value="target/graph.db"/>
     </bean>
 
+    <bean class="org.neo4j.movies.movieimport.MovieDbApiClient">
+        <constructor-arg value="926d2a79e82920b62f03b1cb57e532e6"/>
+    </bean>
+    <bean class="org.neo4j.movies.movieimport.MovieDbLocalStorage">
+        <constructor-arg value="json-data"/>
+    </bean>
+
     <tx:annotation-driven mode="aspectj"/>
 
     <!--import resource="applicatioContext-security.xml"/-->

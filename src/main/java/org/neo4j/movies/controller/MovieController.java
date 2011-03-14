@@ -1,7 +1,7 @@
 package org.neo4j.movies.controller;
 
-import org.neo4j.movies.domain.Actor;
 import org.neo4j.movies.domain.Movie;
+import org.neo4j.movies.domain.Person;
 import org.neo4j.movies.domain.User;
 import org.neo4j.movies.service.CineastsUserDetailsService;
 import org.neo4j.movies.service.DatabasePopulator;
@@ -83,8 +83,8 @@ public class MovieController {
 
     @RequestMapping(value = "/actors/{id}", method = RequestMethod.GET, headers = "Accept=text/html")
     public String singleActorView(Model model, @PathVariable String id) {
-        Actor actor = moviesRepository.getActor(id);
-        model.addAttribute("actor", actor);
+        Person person = moviesRepository.getPerson(id);
+        model.addAttribute("actor", person);
         model.addAttribute("id", id);
         addUser(model);
         return "/actors/show";

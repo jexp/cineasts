@@ -37,23 +37,23 @@ public class DomainTest {
     @Test
     public void actorCanPlayARoleInAMovie() {
         Actor tomHanks = new Actor("1","Tom Hanks").persist();
-        Movie forestGump = new Movie("1", "Forest Gump").persist();
+        Movie forestGump = new Movie("1", "Forrest Gump").persist();
         forestGump.setYear(1994);
 
-        Role role = tomHanks.playedIn(forestGump, "Forest");
+        Role role = tomHanks.playedIn(forestGump, "Forrest");
 
         Movie foundForestGump = this.movieFinder.findByPropertyValue("movies", "id", "1");
 
         assertEquals("created and looked up movie equal", forestGump, foundForestGump);
         Role firstRole = foundForestGump.getRoles().iterator().next();
-        assertEquals("role forest",role, firstRole);
-        assertEquals("role forest","Forest", firstRole.getName());
+        assertEquals("role forrest",role, firstRole);
+        assertEquals("role forrest","Forrest", firstRole.getName());
     }
 
     @Test
     public void canFindMovieByTitleQuery() {
-        Movie forestGump = new Movie("1", "Forest Gump").persist();
-        Iterator<Movie> queryResults = movieFinder.findAllByQuery("search", "title", "Fore*").iterator();
+        Movie forestGump = new Movie("1", "Forrest Gump").persist();
+        Iterator<Movie> queryResults = movieFinder.findAllByQuery("search", "title", "Forre*").iterator();
         assertTrue("found movie by query",queryResults.hasNext());
         Movie foundMovie = queryResults.next();
         assertEquals("created and looked up movie equal", forestGump, foundMovie);
@@ -62,7 +62,7 @@ public class DomainTest {
 
     @Test
     public void userCanRateMovie() {
-        Movie movie= new Movie("1","Forest Gump").persist();
+        Movie movie= new Movie("1","Forrest Gump").persist();
         User user = new User("ich","Micha","password").persist();
         Rating awesome = user.rate(movie, 5, "Awesome");
 

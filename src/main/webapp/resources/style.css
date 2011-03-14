@@ -79,6 +79,9 @@ a img { border:0; }
   clear:both;
 }
 
+#footer img {
+  padding: 10px;
+}
 /**
  * SEARCH RESULTS
  */
@@ -89,12 +92,9 @@ a img { border:0; }
 }
 
 .search-result-details {
-  float:left;
-  padding: 0 10px;
-}
-
-.search-results .rating {
-  float:right;
+/*  float:left;
+  padding: 0px 10px;
+  */
 }
 
 /**
@@ -109,13 +109,19 @@ a img { border:0; }
   float:left;
 }
 
+.profile-image img {
+    width: 100px;
+}
 .actor-image img, .profile-image img, .friend-image img, .thumbnail img {
   border: 1px solid #4C5C2A !important;
 }
 
 .thumbnail {
   display:block;
-  float:left;
+ /* float:left;*/
+}
+.thumbnail img {
+    height: 100px;
 }
 
 .actor-framed-image {
@@ -161,6 +167,11 @@ a img { border:0; }
   float:left;
 }
 
+.actors-list img {
+  height:92px;
+  display:block;
+}
+
 .friends-list li {
   border-top:1px solid #333;
   padding: 5px 0;
@@ -170,6 +181,9 @@ a img { border:0; }
   float:left;
 }
 
+.friend-image img {
+    height: 64px;
+}
 .friends-list .friend-info {
   float:left;
   padding: 0 5px;
@@ -185,7 +199,7 @@ a img { border:0; }
   color: #99CC33;
 }
 
-.rated-movies-list h3, .search-results h3 a {
+.rated-movies-list h3 {
   margin: 0;
   padding: 5px 0;
   float: left;
@@ -250,7 +264,7 @@ a img { border:0; }
 .rating {
   display: block;
   height: 20px;
-  width: 130px;
+  width: 110px;
 }
 
 .rating li {

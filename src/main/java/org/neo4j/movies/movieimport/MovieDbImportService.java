@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 @Service
@@ -26,9 +27,33 @@ public class MovieDbImportService {
     @Autowired
     MovieDbLocalStorage localStorage;
 
+    @Transactional
+    public Map<Integer, String> importMovies(Map<Integer, Integer> ranges) {
+        final Map<Integer,String> movies=new LinkedHashMap<Integer, String>();
+        for (Map.Entry<Integer, Integer> entry : ranges.entrySet()) {
+            for (int id = entry.getKey(); id <= entry.getValue(); id++) {
+                String result = importMovieFailsafe(id);
+                movies.put(id, result);
+            }
+        }
+        return movies;
+    }
+
+    private String importMovieFailsafe(Integer id) {
+        try {
+            Movie movie = doImportMovie(String.valueOf(id));
+            return movie.getTitle();
+        } catch (Exception e) {
+            return e.getMessage();
+        }
+    }
 
     @Transactional
     public Movie importMovie(String movieId) {
+        return doImportMovie(movieId);
+    }
+
+    private Movie doImportMovie(String movieId) {
         logger.debug("Importing movie " + movieId);
 
         Movie movie = moviesRepository.getMovie(movieId);
@@ -37,7 +62,7 @@ public class MovieDbImportService {
         }
 
         Map data = loadMovieData(movieId);
-
+        if (data.containsKey("not_found")) throw new RuntimeException("Data for Movie "+movieId+" not found.");
         movieDbJsonMapper.mapToMovie(data, movie);
         movie.persist();
         relatePersonsToMovie(movie, data);
@@ -45,49 +70,59 @@ public class MovieDbImportService {
     }
 
     private Map loadMovieData(String movieId) {
-        Map movieJson;
         if (localStorage.hasMovie(movieId)) {
-            movieJson = localStorage.loadMovie(movieId);
-        } else {
-            movieJson = client.getMovie(movieId);
-            localStorage.storeMovie(movieId, movieJson);
+            return localStorage.loadMovie(movieId);
         }
-        return movieJson;
+
+        Map data = client.getMovie(movieId);
+        localStorage.storeMovie(movieId, data);
+        return data;
     }
 
     private void relatePersonsToMovie(Movie movie, Map data) {
         Collection<Map> cast = (Collection<Map>) data.get("cast");
         for (Map entry : cast) {
             String id = "" + entry.get("id");
-            Roles job = movieDbJsonMapper.mapToRole((String) entry.get("job"));
+            String jobName = (String) entry.get("job");
+            Roles job = movieDbJsonMapper.mapToRole(jobName);
+            if (job==null) {
+                if (logger.isInfoEnabled()) logger.info("Could not add person with job "+jobName+" "+entry);
+                continue;
+            }
+            Person person = doImportPerson(id);
             switch (job) {
                 case DIRECTED:
-                    Director director = importPerson(id, new Director());
-                    director.directed(movie);
+                    person.directed(movie);
                     break;
                 case ACTS_IN:
-                    Actor actor = importPerson(id, new Actor());
-                    actor.playedIn(movie, (String) entry.get("character"));
+                    person.playedIn(movie, (String) entry.get("character"));
                     break;
             }
         }
     }
 
     @Transactional
-    public <T extends Person> T importPerson(String personId, T newPerson) {
+    public Person importPerson(String personId) {
+        return doImportPerson(personId);
+    }
+
+    private Person doImportPerson(String personId) {
         logger.debug("Importing person " + personId);
-        T person = (T) moviesRepository.getPerson(personId);
+        Person person = moviesRepository.getPerson(personId);
         if (person!=null) return person;
         Map data = loadPersonData(personId);
+        if (data.containsKey("not_found")) throw new RuntimeException("Data for Person "+personId+" not found.");
+        Person newPerson=new Person(personId,null);
         movieDbJsonMapper.mapToPerson(data, newPerson);
         return newPerson.persist();
     }
 
     private Map loadPersonData(String personId) {
-        if (!localStorage.hasPerson(personId)) {
-            Map data = client.getPerson(personId);
-            localStorage.storePerson(personId, data);
+        if (localStorage.hasPerson(personId)) {
+            return localStorage.loadPerson(personId);
         }
+        Map data = client.getPerson(personId);
+        localStorage.storePerson(personId, data);
         return localStorage.loadPerson(personId);
     }
 }

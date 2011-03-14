@@ -36,9 +36,8 @@ public class DomainTest {
 
     @Test
     public void actorCanPlayARoleInAMovie() {
-        Actor tomHanks = new Actor("1","Tom Hanks").persist();
+        Person tomHanks = new Person("1","Tom Hanks").persist();
         Movie forestGump = new Movie("1", "Forrest Gump").persist();
-        forestGump.setYear(1994);
 
         Role role = tomHanks.playedIn(forestGump, "Forrest");
 

@@ -2,8 +2,11 @@ package org.neo4j.movies.domain;
 
 import org.springframework.data.annotation.Indexed;
 import org.springframework.data.graph.annotation.NodeEntity;
+import org.springframework.data.graph.annotation.RelatedTo;
+import org.springframework.data.graph.annotation.RelatedToVia;
 
 import java.util.Date;
+import java.util.Set;
 
 /**
  * @author mh
@@ -89,4 +92,33 @@ public class Person {
     public void setProfileImageUrl(String profileImageUrl) {
         this.profileImageUrl = profileImageUrl;
     }
+
+    public String getProfileImageUrl() {
+        return profileImageUrl;
+    }
+
+    @RelatedTo(elementClass = Movie.class, type = "DIRECTED")
+    private Set<Movie> directedMovies;
+
+    public Set<Movie> getDirectedMovies() {
+        return directedMovies;
+    }
+
+    public void directed(Movie movie) {
+        this.directedMovies.add(movie);
+    }
+
+    @RelatedToVia(elementClass = Role.class, type = "ACTS_IN")
+    Iterable<Role> roles;
+
+    public Iterable<Role> getRoles() {
+        return roles;
+    }
+
+    public Role playedIn(Movie movie, String roleName) {
+        Role role = relateTo(movie, Role.class, "ACTS_IN");
+        role.setName(roleName);
+        return role;
+    }
+
 }

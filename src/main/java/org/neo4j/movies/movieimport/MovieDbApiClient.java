@@ -3,6 +3,7 @@ package org.neo4j.movies.movieimport;
 import org.codehaus.jackson.map.ObjectMapper;
 
 import java.net.URL;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -22,17 +23,9 @@ public class MovieDbApiClient {
     }
 
     private Map loadJsonData(String id, String url) {
-        Map data = getUrlAsJson(url);
-        if (data == null) {
-            throw new RuntimeException("Data for id " + id + " not found " + url);
-        }
-        return data;
-    }
-
-    private Map getUrlAsJson(String url) {
         try {
             List value = mapper.readValue(new URL(url), List.class);
-            if (value.isEmpty() || value.get(0).equals("Nothing found.")) return null;
+            if (value.isEmpty() || value.get(0).equals("Nothing found.")) return Collections.singletonMap("not_found",System.currentTimeMillis());
             return (Map) value.get(0);
         } catch (Exception e) {
             throw new RuntimeException("Failed to get data from " + url, e);

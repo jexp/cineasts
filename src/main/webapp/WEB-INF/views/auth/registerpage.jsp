@@ -16,14 +16,14 @@ pageEncoding="UTF-8"%>
 		<h1>Login</h1>
 		<div class="error">${error}</div>
 		
-		<form action="/user/register" method="post" >
+		<form action="/auth/register" method="post" >
       <p>
         <label for="j_username">Login:</label>
-        <input id="j_username" name="j_username" type="text" value=""/>
+        <input id="j_username" name="j_username" type="text" value="${j_username}"/>
       </p>
       <p>
         <label for="j_displayname">Name:</label>
-        <input id="j_displayname" name="j_displayname" type="text" value=""/>
+        <input id="j_displayname" name="j_displayname" type="text" value="${j_displayname}"/>
       </p>
       <p>
         <label for="j_password">Password:</label>
@@ -32,6 +32,6 @@ pageEncoding="UTF-8"%>
       <input  type="submit" value="Register"/>
     </form>
     <br/>
-    <a href="/auth/loginpage">Login</a>
+    <a href="/auth/login">Login</a>
 	</body>
 </html>

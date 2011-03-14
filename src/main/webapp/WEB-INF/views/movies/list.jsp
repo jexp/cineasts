@@ -9,21 +9,13 @@
     <ul class="search-results">
       <c:forEach items="${movies}" var="movie">
         <li>
-          <a class="thumbnail" href="<c:url value="/movies/${movie.id}" />"><img src="<c:url value="/images/movie-placeholder.png" />" /></a>
           <div class="search-result-details">
-            <h3><a href="/movies/${movie.id}"><c:out value="${movie.title}" /></a></h3>
-            <p><c:out value="${movie.description}" escapeXml="true" /></p>
+          <c:set var="image" value="${movie.imageUrl}"/>
+          <c:if test="${empty image}"><c:set var="image" value="/images/movie-placeholder.png"/></c:if>
+          <a class="thumbnail" href="<c:url value="/movies/${movie.id}" />"> <img src="<c:url value="${image}" />" /></a>
+            <a href="/movies/${movie.id}">${movie.title}</a> <img alt="${movie.stars} stars" src="/images/rated_${movie.stars}.png"/>
+            <p><c:out value="${movie.tagline}" escapeXml="true" /></p>
           </div>
-          <ul class="rating">
-            <!-- Add a loop here -->
-            <c:set var="stars" value="${movie.stars}"/>
-            <li class="${stars > 0 ? "active" : "disabled"}"></li>
-            <li class="${stars > 1 ? "active" : "disabled"}"></li>
-            <li class="${stars > 2 ? "active" : "disabled"}"></li>
-            <li class="${stars > 3 ? "active" : "disabled"}"></li>
-            <li class="${stars > 4 ? "active" : "disabled"}"></li>
-          </ul>
-          <div class="break"></div>
         </li>
       </c:forEach>
     </ul>

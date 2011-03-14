@@ -1,4 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%--@elvariable id="user" type="org.neo4j.movies.domain.User"--%>
 <c:set var="name" value="${profiled.name}"/>
@@ -41,39 +43,36 @@
           </c:choose>
         </c:when>
         <c:otherwise>
-		  <form action="/user/${profiled.login}/friends" method="post">
-          	<a href="#" onClick="form.submit();return false;">Add ${name} as a friend.</a>
+		  <form id="add_friend" action="/user/${profiled.login}/friends" method="post">
+          	<a href="#" onClick="document.getElementById('add_friend').submit();return false;">Add ${name} as a friend.</a>
 		  </form>
         </c:otherwise>
       </c:choose>
     </div>
+    <c:set var="ratings" value="${profiled.ratings}"/>
     <div class="span-7 last">
       <div class="profile-feed">
         <div class="span-third">
-          <h2>Rated movies</h2>
+          <h2>${name}'s rated movies</h2>
         </div>
         <div class="span-third last">
-          <h2>12</h2>
+          <h2>${fn:length(ratings)}</h2>
         </div>
+
+
         <ul class="rated-movies-list span-all last">
-            <c:set var="ratings" value="${profiled.ratings}"/>
             <c:choose>
                 <c:when test="${not empty ratings}">
-                        <c:forEach items="${ratings}" var="rating">
-                            <c:set var="movie" value="${rating.movie}"/>
-          <li>
-              <h3><a href="<c:url value="/movies/${movie.id}" />"><c:out value="${movie.title}"/> (${movie.year}) - &quot;${rating.comment}&quot;</a></h3>
-              <ul class="rating">
-                <!-- Add a loop here -->
-                <c:set var="stars" value="${rating.stars}"/>
-                <li class="${stars > 0 ? "active" : "disabled"}"></li>
-                <li class="${stars > 1 ? "active" : "disabled"}"></li>
-                <li class="${stars > 2 ? "active" : "disabled"}"></li>
-                <li class="${stars > 3 ? "active" : "disabled"}"></li>
-                <li class="${stars > 4 ? "active" : "disabled"}"></li>
-              </ul>
-          </li>
-                        </c:forEach>
+                    <c:forEach items="${ratings}" var="rating">
+                        <c:set var="movie" value="${rating.movie}"/>
+                        <c:set var="stars" value="${rating.stars}"/>
+                        <li>
+                            <h4><a href="<c:url value="/movies/${movie.id}" />"><c:out value="${movie.title}"/>
+                                (${movie.year}) - &quot;${rating.comment}&quot;</a>
+                            <img class="rating" src="/images/rated_${stars}.png" alt="${stars} stars"/>
+                            </h4>
+                        </li>
+                    </c:forEach>
                 </c:when>
                 <c:otherwise>
                     ${name} has not rated any movies.

@@ -4,17 +4,8 @@
 <div class="navigation">
     <c:choose>
         <c:when test="${empty user}">
-			<c:set var="last" value="Login"/>
-        	<c:if test="${not empty param.login_error}">
-				<c:set var="last" value="${sessionScope['SPRING_SECURITY_LAST_USERNAME']}"/>
-        	</c:if>
-			<form action="/j_spring_security_check" method="post" >
-	        <input id="j_username" name="j_username" type="text" value="${last}"
-				onfocus="this.value = (this.value=='Login') ? '' : this.value;" onblur="this.value = (this.value=='') ? '${last}' : this.value;"
-			/>
-        	<input id="j_password" name="j_password" type="password" onfocus="this.value = (this.value=='*******') ? '' : this.value;" onblur="this.value = (this.value=='') ? '*******' : this.value;" value="*******"/>
-			<input type="image" src="/images/rating-active.png" value="Login" style="max-width:0px;max-height:0px;"/>
-	    	</form>
+            <a href="<c:url value="/auth/login" />">Login</a>
+            <a href="<c:url value="/auth/registerpage" />">Register</a>
         </c:when>
         <c:otherwise>
             <a href="<c:url value="/user/${user.login}" />">${user.name}</a>

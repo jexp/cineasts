@@ -23,14 +23,14 @@
     <bean id="neo4jConfig" class="org.springframework.data.graph.neo4j.config.Neo4jConfiguration"/>
 
     <bean id="graphDatabaseService" class="org.neo4j.kernel.EmbeddedGraphDatabase" destroy-method="shutdown">
-        <constructor-arg value="target/graph.db"/>
+        <constructor-arg value="data/graph.db"/>
     </bean>
 
     <bean class="org.neo4j.movies.movieimport.MovieDbApiClient">
         <constructor-arg value="926d2a79e82920b62f03b1cb57e532e6"/>
     </bean>
     <bean class="org.neo4j.movies.movieimport.MovieDbLocalStorage">
-        <constructor-arg value="json-data"/>
+        <constructor-arg value="data/json"/>
     </bean>
 
     <tx:annotation-driven mode="aspectj"/>

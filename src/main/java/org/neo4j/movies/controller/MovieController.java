@@ -2,6 +2,7 @@ package org.neo4j.movies.controller;
 
 import org.neo4j.movies.domain.Movie;
 import org.neo4j.movies.domain.Person;
+import org.neo4j.movies.domain.Rating;
 import org.neo4j.movies.domain.User;
 import org.neo4j.movies.service.CineastsUserDetailsService;
 import org.neo4j.movies.service.DatabasePopulator;
@@ -50,26 +51,34 @@ public class MovieController {
 
 
     @RequestMapping(value = "/movies/{movieId}", method = RequestMethod.GET, headers = "Accept=text/html")
-    public String singleMovieView(Model model, @PathVariable String movieId) {
+    public String singleMovieView(final Model model, @PathVariable String movieId) {
+        User user = addUser(model);
         Movie movie = moviesRepository.getMovie(movieId);
-        model.addAttribute("movie", movie);
         model.addAttribute("id", movieId);
-        addUser(model);
+        if (movie != null) {
+            model.addAttribute("movie", movie);
+            final int stars = movie.getStars();
+            model.addAttribute("stars", stars);
+            Rating rating = null;
+            if (user!=null) rating = movie.getRelationshipTo(user, Rating.class, "RATED");
+            if (rating == null) rating = new Rating().rate(stars,null);
+            model.addAttribute("userRating",rating);
+        }
         return "/movies/show";
     }
+
     @RequestMapping(value = "/movies/{movieId}", method = RequestMethod.POST, headers = "Accept=text/html")
     public String updateMovie(Model model, @PathVariable String movieId, @RequestParam(value = "rated",required = false) Integer stars, @RequestParam(value = "comment",required = false) String comment) {
         Movie movie = moviesRepository.getMovie(movieId);
         User user = userDetailsService.getUserFromSession();
         moviesRepository.rateMovie(movie,user, stars==null ? -1 : stars,comment!=null ? comment.trim() : null);
-        model.addAttribute("movie", movie);
-        model.addAttribute("id", movieId);
-        model.addAttribute("user", user);
-        return "/movies/show";
+        return singleMovieView(model,movieId);
     }
 
-    private void addUser(Model model) {
-        model.addAttribute("user", userDetailsService.getUserFromSession());
+    private User addUser(Model model) {
+        User user = userDetailsService.getUserFromSession();
+        model.addAttribute("user", user);
+        return user;
     }
 
     @RequestMapping(value = "/movies", method = RequestMethod.GET, headers = "Accept=text/html")
@@ -110,14 +119,4 @@ public class MovieController {
         addUser(model);
         return "index";
     }
-
-    /**
-     * Post a tweet about a session.
-     */
-/*    @RequestMapping(value="/events/{eventId}/sessions/{sessionId}/tweets", method=RequestMethod.POST)
-    public ResponseEntity<String> postSessionTweet(@PathVariable Long eventId, @PathVariable Integer sessionId, @RequestParam String status) {
-        return new ResponseEntity<String>(HttpStatus.OK);
-    }
-*/
-
 }

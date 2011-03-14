@@ -3,13 +3,18 @@ package org.neo4j.movies.controller;
 import org.neo4j.movies.domain.Movie;
 import org.neo4j.movies.movieimport.MovieDbImportService;
 import org.neo4j.movies.service.CineastsUserDetailsService;
-import org.neo4j.movies.service.DatabasePopulator;
 import org.neo4j.movies.service.MoviesRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * @author mh
@@ -18,24 +23,45 @@ import org.springframework.web.bind.annotation.*;
 @Controller
 public class ImportController {
 
-    private MoviesRepository moviesRepository;
-    private CineastsUserDetailsService userDetailsService;
     private MovieDbImportService importService;
     private static final Logger log = LoggerFactory.getLogger(ImportController.class);
 
     @Autowired
-    public ImportController(MoviesRepository moviesRepository, MovieDbImportService importService, CineastsUserDetailsService userDetailsService) {
-        this.moviesRepository = moviesRepository;
+    public ImportController(MovieDbImportService importService) {
         this.importService = importService;
-        this.userDetailsService = userDetailsService;
     }
 
-    // for web service (JSON) clients
-    @RequestMapping(value = "/import/{id}", method = RequestMethod.POST)
-    public
-    @ResponseBody
-    Movie getMovie(@PathVariable String id) {
-        importService.importMovie(id);
-        return moviesRepository.getMovie(id);
+    @RequestMapping(value = "/import/{ids}", method = RequestMethod.GET)
+    public String importMovie(@PathVariable String ids, Model model) {
+        long start=System.currentTimeMillis();
+        final Map<Integer, String> movies = importService.importMovies(extractRanges(ids));
+        long duration = (System.currentTimeMillis() - start) / 1000;
+        model.addAttribute("duration", duration);
+        model.addAttribute("ids", ids);
+        model.addAttribute("movies", movies.entrySet());
+        return "import/result";
+    }
+
+
+    private Map<Integer, Integer> extractRanges(String ids) {
+        Map<Integer, Integer> ranges = new LinkedHashMap<Integer, Integer>();
+        StringBuilder errors = new StringBuilder();
+        for (String token : ids.split(",")) {
+            try {
+                if (token.contains("-")) {
+                    String[] range = token.split("-");
+                    ranges.put(Integer.parseInt(range[0]), Integer.parseInt(range[1]));
+                } else {
+                    int id = Integer.parseInt(token);
+                    ranges.put(id, id);
+                }
+            } catch (Exception e) {
+                errors.append(token).append(": ").append(e.getMessage()).append("\n");
+            }
+        }
+        if (errors.length() > 0) {
+            throw new RuntimeException("Error parsing ids\n" + errors);
+        }
+        return ranges;
     }
 }

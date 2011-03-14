@@ -11,7 +11,7 @@ import org.springframework.data.graph.annotation.StartNode;
 @RelationshipEntity
 public class Role {
     @EndNode Movie movie;
-    @StartNode Actor actor;
+    @StartNode Person actor;
 
     String name;
 
@@ -27,7 +27,7 @@ public class Role {
         return movie;
     }
 
-    public Actor getActor() {
+    public Person getActor() {
         return actor;
     }
 

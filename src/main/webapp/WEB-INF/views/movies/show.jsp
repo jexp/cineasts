@@ -1,23 +1,24 @@
 <%@ page session="false" %>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="s" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
+<html>
+<head><title>${movie.title}</title></head>
+<body>
 <c:choose>
     <c:when test="${not empty movie}">
       <div class="span-5">
         <div class="profile-header">
-          <div class="profile-image"><img src="<c:url value="/images/movie-placeholder.png" />" /></div>
+          <%--@elvariable id="movie" type="org.neo4j.movies.domain.Movie"--%>
+          <c:set var="image" value="${movie.imageUrl}"/>
+          <c:if test="${empty image}"><c:set var="image" value="/images/movie-placeholder.png"/></c:if>
+          <div class="profile-image"><img src="<c:url value="${image}"/>"/></div>
           <div class="profile-header-details">          
-            <h2>${movie.title} (${movie.year})</h2>
-            <ul class="rating">
-              <!-- Add a loop here -->
-              <li class="active"></li>
-              <li class="active"></li>
-              <li class="active"></li>
-              <li class="disabled"></li>
-              <li class="disabled"></li>
-            </ul>
+            <h2>${movie.title} (${movie.year}) <img src="/images/rated_${stars}.png" alt="${stars} stars"/></h2>
           </div>
+          <h3><${movie.tagline}</h3>
           <div class="break"></div>
         </div>
 
@@ -26,26 +27,52 @@
 
           <table>
             <tr>
-              <th>Status</th>
-              <td>Released</td>
+              <th>Language</th>
+              <td>${movie.language}</td>
             </tr>
             <tr>
               <th>Runtime</th>
-              <td>2h 12m</td>
+              <td>${movie.runtime} Minutes</td>
             </tr>
             <tr>
-              <th>Etc</th>
-              <td>etc</td>
+              <th>Genre</th>
+              <td>${movie.genre}</td>
+            </tr>
+            <tr>
+              <th>Other sites</th>
+              <td><a target="cineasts_link" href="http://www.themoviedb.org/movie/${movie.id}">TheMovieDb.org</a> |
+                  <a target="cineasts_link" href="http://www.imdb.com/title/${movie.imdbId}">IMDb</a>
+              </td>
+            </tr>
+            <tr>
+              <th>Buy DVDs & Books</th>
+              <td><a target="cineasts_link" href="http://www.amazon.com/s/?url=search-alias%3Daps&field-keywords=<c:url value="${movie.title}"/>">Amazon</a> |
+                  <a target="cineasts_link" href="http://www.cinebutler.com/search.html?searchBy=title&searchFor=<c:url value="${movie.title}"/>">CineButler</a>
+              </td>
+            </tr>
+            <tr>
+              <th>In Cinemas</th>
+              <td><a target="cineasts_link" href="http://www.google.com/movies?q=<c:url value="${movie.title}"/>">Google Movies</a>
+              </td>
             </tr>
           </table>
         </div>
 
         <div class="span-half last">
+          <c:if test="${not empty movie.trailer}">
           <h3>Trailers</h3>
-
-          <ul>
-            <li><a href="#">Some trailer</a></li>
-          </ul>
+            <c:set var="youtube" value="movie.youtubeId"/>
+            <c:choose>
+                <c:when test="${not empty youtube}">
+                    <iframe title="YouTube video player" width="200" height="143" src="http://www.youtube.com/embed/${movie.youtubeId}?rel=0&controls=0&egm=1&fs=1" frameborder="0" allowfullscreen></iframe>
+                </c:when>
+                <c:otherwise>
+                    <ul>
+                      <li><a href="${movie.trailer}">Trailer</a></li>
+                    </ul>
+                </c:otherwise>
+            </c:choose>
+          </c:if>
         </div>
 
         <div class="span-half">
@@ -53,20 +80,21 @@
 
           <ul>
             <li>
-              <h4>USA</h4>
               <table>
                 <tr>
                   <th>Released</th>
-                  <td>1994-06-23</td>
+                  <td><fmt:formatDate value="${movie.releaseDate}" pattern="yyyy/dd/MM"/></td>
                 </tr>
-                <tr>
-                  <th>Runtime</th>
-                  <td>2h 12m</td>
-                </tr>
-                <tr>
-                  <th>Etc</th>
-                  <td>etc</td>
-                </tr>
+                  <c:if test="${not empty movie.homepage}">
+                  <tr>
+                    <th></th>
+                    <td><a href="${movie.homepage}">Homepage</a></td>
+                  </tr>
+                  </c:if>
+                  <tr>
+                    <th>Studio</th>
+                    <td>${movie.studio}</td>
+                  </tr>
               </table>
             </li>
           </ul>
@@ -77,62 +105,58 @@
         <div class="movie-content-outer">
           <div class="movie-content">
             <h2>Overview</h2>
-            <p>Lorem ipsum dolor sit amet.</p>
+            <p>${movie.description}</p>
 
             <h2>Cast</h2>
             <c:if test="${not empty movie.roles}">
               <ul class="actors-list">
                 <c:forEach items="${movie.roles}" var="role">
+                    <c:set var="actor" value="${role.actor}"/>
                     <li>
-                        <a class="actor-image" href="<c:url value="/actors/${role.actor.id}" />"><img src="<c:url value="/images/profile-placeholder-small.png" />" /></a>
-                        <a href="<c:url value="/actors/${role.actor.id}" />"><c:out value="${role.actor.name}" /> as <c:out value="${role.name}" /></a>
+                        <c:set var="image" value="${actor.profileImageUrl}"/>
+                        <c:if test="${empty image}"><c:set var="image" value="/images/profile-placeholder-small.png"/></c:if>
+                        <a class="actor-image" href="<c:url value="/actors/${actor.id}" />"><img alt="${actor.name}" src="<c:url value="${image}" />" /></a>
+                        <a href="<c:url value="/actors/${actor.id}" />"><c:out value="${actor.name}" /> as <c:out value="${role.name}" /></a>
                     </li>
                 </c:forEach>
               </ul>
               <div class="break"></div>
             </c:if>
             
-            <h2>Reviews</h2>
+            <h3>Reviews</h3>
+            <c:if test="${not empty user}">
+                <script type="text/javascript">
+                    function rate(n) {
+                        var hidden = document.getElementById('rated');
+                        hidden.value = n;
+                        for (i = 1; i <= 5; i++) {
+                            document.getElementById("rated_" + i).src = (i <= n ) ? "/images/rating-active.png" : "/images/rating-disabled.png";
+                        }
+                    }
+                </script>
+                <form method="post" action="<c:url value="/movies/${movie.id}" />">
+                    <h4>Give
+                    <c:forEach begin="1" end="5" var="i">
+                    <a href="#" onClick="rate(${i});"><img src="/images/rating-active.png" id="rated_${i}"/></a>
+                    </c:forEach>
+                    to &quot;${movie.title}&quot; saying:
+                    <input type="hidden" value="${userRating.stars}" name="rated" id="rated"/>
+                    <input type="text" size="100" name="comment" value="${userRating.comment}"/>
+                    <input type="submit" value="Rate!"/>
+                    </h4>
+                </form>
+                <script type="text/javascript">
+                    rate(${userRating.stars});
+                </script>
+            </c:if>
             <c:if test="${not empty movie.ratings}">
               <ul>
                 <c:forEach items="${movie.ratings}" var="rating">
-                  <li>
-                    <h4>${rating.stars} stars by <a href="<c:url value="/user/${rating.user.login}" />">${rating.user.name}</a></h4>
-                    <p>${rating.comment}</p>
-                  </li>
+                    <c:if test="${rating != userRating}">
+                    <li><img src="/images/rated_${rating.stars}.png" alt="${rating.stars} stars"/> by <a href="<c:url value="/user/${rating.user.login}" />">${rating.user.name}</a> who says: &quot;${rating.comment}&quot;</li>
+                    </c:if>
                 </c:forEach>
               </ul>
-            </c:if>
-            
-            <c:if test="${not empty user}">
-              <form method="post" action="<c:url value="/movies/${movie.id}" />">
-                  <ul class="rating-input">
-                    <lh>My rating</lh>
-                    <li>
-                      <input id="rating-one" type="radio" name="rated" value="1" />
-                      <label class="button-label" for="rating-one">1</label>
-                    </li>
-                    <li>
-                      <input id="rating-two" type="radio" name="rated" value="2" />
-                      <label class="button-label" for="rating-two">2</label>
-                    </li>
-                    <li>
-                      <input id="rating-three" type="radio" name="rated" value="3" selected="selected" />
-                      <label class="button-label" for="rating-three">3</label>
-                    </li>
-                    <li>
-                      <input id="rating-four" type="radio" name="rated" value="4" />
-                      <label class="button-label" for="rating-four">4</label>
-                    </li>
-                    <li>
-                      <input id="rating-five" type="radio" name="rated" value="5" />
-                      <label class="button-label" for="rating-five">5</label>
-                    </li>
-                  </ul>
-                  <textarea rows="3" cols="60" name="comment"></textarea>
-                  <div class="break"></div>
-                  <input type="submit" value="Submit review" />
-              </form>
             </c:if>
           </div>
         </div>
@@ -143,3 +167,4 @@
         <p>The movie you were looking for could not be found.</p>
     </c:otherwise>
 </c:choose>
+</body></html>

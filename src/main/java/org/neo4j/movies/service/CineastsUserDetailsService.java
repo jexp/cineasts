@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.graph.neo4j.finder.FinderFactory;
 import org.springframework.data.graph.neo4j.finder.NodeFinder;
+import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
@@ -15,6 +16,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.context.support.WebApplicationContextUtils;
 
 /**
  * @author mh
@@ -67,6 +69,18 @@ public class CineastsUserDetailsService implements UserDetailsService, Initializ
 
     private void setUserInSession(User user) {
         SecurityContext context = SecurityContextHolder.getContext();
-        context.setAuthentication(new UsernamePasswordAuthenticationToken(user.getLogin(),user.getPassword()));
+        CineastsUserDetails userDetails = new CineastsUserDetails(user);
+        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, user.getPassword(),userDetails.getAuthorities());
+        context.setAuthentication(authentication);
+
+    }
+
+    @Transactional
+    public void addFriend(String login) {
+        User friend = findUser(login);
+        User user = getUserFromSession();
+        if (!user.equals(friend)) {
+            user.addFriend(friend);
+        }
     }
 }

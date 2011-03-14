@@ -7,10 +7,7 @@ import org.springframework.data.graph.annotation.RelatedTo;
 import org.springframework.data.graph.annotation.RelatedToVia;
 import org.springframework.data.graph.core.Direction;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Date;
-import java.util.Set;
+import java.util.*;
 
 import static org.springframework.data.graph.core.Direction.INCOMING;
 
@@ -29,14 +26,11 @@ public class Movie {
 
     String description;
 
-    int year;
-
     @RelatedTo(type="DIRECTED", direction = INCOMING)
+    Person director;
 
-    Director director;
-
-    @RelatedTo(elementClass = Actor.class, type = "ACTS_IN", direction = INCOMING)
-    Set<Actor> actors;
+    @RelatedTo(elementClass = Person.class, type = "ACTS_IN", direction = INCOMING)
+    Set<Person> actors;
 
     @RelatedToVia(elementClass = Role.class, type = "ACTS_IN", direction = INCOMING)
     Iterable<Role> roles;
@@ -64,7 +58,7 @@ public class Movie {
         this.title = title;
     }
 
-    public Collection<Actor> getActors() {
+    public Collection<Person> getActors() {
         return actors;
     }
 
@@ -73,11 +67,10 @@ public class Movie {
     }
 
     public int getYear() {
-        return year;
-    }
-
-    public void setYear(int year) {
-        this.year = year;
+        if (releaseDate==null) return 0;
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(releaseDate);
+        return cal.get(Calendar.YEAR);
     }
 
     public String getId() {
@@ -90,14 +83,14 @@ public class Movie {
 
     @Override
     public String toString() {
-        return String.format("%s (%d) [%s]", title, year, id);
+        return String.format("%s (%s) [%s]", title, releaseDate, id);
     }
 
     public String getDescription() {
         return description;
     }
 
-    public float getStars() {
+    public int getStars() {
         Iterable<Rating> allRatings = ratings;
 
         if (allRatings == null) return 0;
@@ -106,7 +99,7 @@ public class Movie {
             stars += rating.getStars();
             count++;
         }
-        return (float) stars / count;
+        return count==0 ? 0 : stars / count;
     }
 
     public Collection<Rating> getRatings() {
@@ -114,7 +107,7 @@ public class Movie {
         return allRatings == null ? Collections.<Rating>emptyList() : IteratorUtil.asCollection(allRatings);
     }
 
-    public Director getDirector() {
+    public Person getDirector() {
         return director;
     }
 
@@ -220,6 +213,14 @@ public class Movie {
 
     public String getImageUrl() {
         return imageUrl;
+    }
+
+    public String getYoutubeId() {
+        String trailerUrl = trailer;
+        if (trailerUrl==null || !trailerUrl.contains("youtu")) return null;
+        String[] parts = trailerUrl.split("[=/]");
+        int numberOfParts = parts.length;
+        return numberOfParts > 0 ? parts[numberOfParts-1] : null;
     }
 }
 

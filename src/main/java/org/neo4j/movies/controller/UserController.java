@@ -32,15 +32,11 @@ public class UserController {
 
     @RequestMapping(value = "/user/{login}/friends", method = RequestMethod.POST)
     public String addFriend(Model model, @PathVariable("login") String login) {
-        User friend = userDetailsService.findUser(login);
-        User user = userDetailsService.getUserFromSession();
-	    if (!user.equals(friend)) {
-            user.addFriend(friend);
-        }
-		return publicProfile(model, friend, user);
+        userDetailsService.addFriend(login);
+		return "forward:/user/"+login;
     }
 
-    @RequestMapping(value = "/user/{login}", method = RequestMethod.GET)
+    @RequestMapping(value = "/user/{login}")
     public String publicProfile(Model model, @PathVariable("login") String login) {
         User profiled = userDetailsService.findUser(login);
         User user = userDetailsService.getUserFromSession();

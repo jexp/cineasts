@@ -43,7 +43,7 @@ public class AuthController {
 
         try {
             userDetailsService.register(login,name,password);
-            return "/user/"+login;
+            return "forward:/user/"+login;
         } catch(Exception e) {
             model.addAttribute("j_username",login);
             model.addAttribute("j_displayname",name);
@@ -56,5 +56,11 @@ public class AuthController {
     public String denied() {
         logger.debug("Received request to show denied page");
         return "/auth/deniedpage";
+    }
+
+    @RequestMapping(value = "/registerpage", method = RequestMethod.GET)
+    public String registerPage() {
+        logger.debug("Received request to show register page");
+        return "/auth/registerpage";
     }
 }

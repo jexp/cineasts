@@ -28,18 +28,18 @@ public class DatabasePopulator {
 
     @Transactional
     public List<Movie> populateDatabase() {
-        Actor tomHanks = new Actor("1", "Tom Hanks").persist();
+        /*
+        Person tomHanks = new Person("1", "Tom Hanks").persist();
         Movie forestGump = new Movie("1", "Forrest Gump").persist();
-        forestGump.setYear(1994);
         tomHanks.playedIn(forestGump,"Forrest");
-
+        */
         User me = new User("micha", "Micha", "password", User.Roles.ROLE_ADMIN,User.Roles.ROLE_USER).persist();
-        Rating awesome = me.rate(forestGump, 5, "Awesome");
+        //Rating awesome = me.rate(forestGump, 5, "Awesome");
 
         User ollie = new User("ollie", "Olliver", "password",User.Roles.ROLE_USER).persist();
-        ollie.rate(forestGump, 2, "ok");
+        //ollie.rate(forestGump, 2, "ok");
         me.addFriend(ollie);
-        return asList(forestGump);
+        return asList();
     }
 
     @Transactional

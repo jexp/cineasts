@@ -73,6 +73,7 @@ a img { border:0; }
 }
 
 #footer {
+  text-align:center;
   color: #999999;
   font-size: 12px;
   padding: 10px;

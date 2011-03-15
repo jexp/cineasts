@@ -21,13 +21,6 @@
         <security:logout logout-url="/auth/logout" logout-success-url="/" invalidate-session="true"/>
     </security:http>
 
-    <!--
-    Usernames/Passwords are
-        rod/koala
-        dianne/emu
-        scott/wombat
-        peter/opal
-    -->
     <security:authentication-manager>
         <security:authentication-provider user-service-ref="userDetailsService">
             <security:password-encoder hash="md5">

@@ -11,7 +11,7 @@
     <c:when test="${not empty movie}">
       <div class="span-5">
         <div class="profile-header">
-          <%--@elvariable id="movie" type="org.neo4j.movies.domain.Movie"--%>
+                <%--@elvariable id="movie" type="org.neo4j.cineasts.domain.Movie"--%>
           <c:set var="image" value="${movie.imageUrl}"/>
           <c:if test="${empty image}"><c:set var="image" value="/images/movie-placeholder.png"/></c:if>
           <div class="profile-image"><img src="<c:url value="${image}"/>"/></div>

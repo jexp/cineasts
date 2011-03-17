@@ -2,7 +2,7 @@
 <%@ taglib uri="http://www.springframework.org/tags" prefix="s" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%--@elvariable id="actor" type="org.neo4j.movies.domain.Actor"--%>
+<%--@elvariable id="actor" type="org.neo4j.cineasts.domain.Actor"--%>
 <c:choose>
     <c:when test="${actor != null}">
       <div class="span-4">

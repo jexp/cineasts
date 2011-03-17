@@ -16,15 +16,15 @@
 
     <context:annotation-config/>
     <context:spring-configured/>
-    <context:component-scan base-package="org.neo4j.movies"/>
+    <context:component-scan base-package="org.neo4j.cineasts"/>
     <bean class="org.springframework.data.graph.neo4j.config.Neo4jConfiguration"/>
 
     <bean id="graphDatabaseService" class="org.neo4j.kernel.ImpermanentGraphDatabase"/>
 
-    <bean class="org.neo4j.movies.movieimport.MovieDbApiClient">
+    <bean class="org.neo4j.cineasts.movieimport.MovieDbApiClient">
         <constructor-arg value="926d2a79e82920b62f03b1cb57e532e6"/>
     </bean>
-    <bean class="org.neo4j.movies.movieimport.MovieDbLocalStorage">
+    <bean class="org.neo4j.cineasts.movieimport.MovieDbLocalStorage">
         <constructor-arg value="target/json-data"/>
     </bean>
     <tx:annotation-driven mode="aspectj"/>

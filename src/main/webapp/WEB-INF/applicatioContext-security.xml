@@ -29,6 +29,6 @@
         </security:authentication-provider>
     </security:authentication-manager>
 
-    <bean id="userDetailsService" class="org.neo4j.movies.service.CineastsUserDetailsService"/>
+    <bean id="userDetailsService" class="org.neo4j.cineasts.service.CineastsUserDetailsService"/>
 
 </beans>

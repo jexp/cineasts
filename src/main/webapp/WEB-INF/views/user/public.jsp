@@ -2,7 +2,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%--@elvariable id="user" type="org.neo4j.movies.domain.User"--%>
+<%--@elvariable id="user" type="org.neo4j.cineasts.domain.User"--%>
 <c:set var="name" value="${profiled.name}"/>
 <html>
   <head><title>Profile for ${name}</title></head>

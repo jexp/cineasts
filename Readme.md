@@ -1,4 +1,4 @@
-![Cineasts.net Logo](http://github.com/jexp/cineasts/raw/master/cineasts.png)
+![Cineasts.net Logo](https://github.com/jexp/cineasts/raw/master/cineasts.png)
 Cineasts.net
 ============
 

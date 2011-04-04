@@ -1,7 +1,7 @@
 package org.neo4j.cineasts.movieimport;
 
 import org.neo4j.cineasts.domain.*;
-import org.neo4j.cineasts.service.MoviesRepository;
+import org.neo4j.cineasts.service.CineastsRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +19,7 @@ public class MovieDbImportService {
     MovieDbJsonMapper movieDbJsonMapper = new MovieDbJsonMapper();
 
     @Autowired
-    MoviesRepository moviesRepository;
+    CineastsRepository moviesRepository;
 
     @Autowired
     MovieDbApiClient client;

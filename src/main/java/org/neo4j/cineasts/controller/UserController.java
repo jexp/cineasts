@@ -2,6 +2,7 @@ package org.neo4j.cineasts.controller;
 
 
 import org.neo4j.cineasts.domain.User;
+import org.neo4j.cineasts.service.CineastsRepository;
 import org.neo4j.cineasts.service.CineastsUserDetailsService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,14 +19,16 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 public class UserController {
 
-    @Autowired
-    CineastsUserDetailsService userDetailsService;
+    @Autowired CineastsUserDetailsService userDetailsService;
+    @Autowired CineastsRepository repository;
 
     private final static Logger logger = LoggerFactory.getLogger(UserController.class);
 
     @RequestMapping(value = "/user", method = RequestMethod.GET)
     public String profile(Model model) {
-        model.addAttribute("user", userDetailsService.getUserFromSession());
+        final User user = userDetailsService.getUserFromSession();
+        model.addAttribute("user", user);
+        model.addAttribute("recommendations", repository.recommendMovies(user, 3));
         return "/user/index";
     }
 

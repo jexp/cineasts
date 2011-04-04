@@ -1,11 +1,10 @@
 package org.neo4j.cineasts.service;
 
 import org.neo4j.cineasts.domain.User;
-import org.springframework.beans.factory.InitializingBean;
+import org.neo4j.cineasts.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
-import org.springframework.data.graph.neo4j.finder.FinderFactory;
-import org.springframework.data.graph.neo4j.finder.NodeFinder;
+import org.springframework.data.graph.neo4j.support.GraphDatabaseContext;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
@@ -21,15 +20,13 @@ import org.springframework.transaction.annotation.Transactional;
  * @since 06.03.11
  */
 @Service
-public class CineastsUserDetailsService implements UserDetailsService, InitializingBean {
+public class CineastsUserDetailsService implements UserDetailsService {
 
-    @Autowired private FinderFactory finderFactory;
-    private NodeFinder<User> userFinder;
+    @Autowired
+    private UserRepository userRepository;
 
-    @Override
-    public void afterPropertiesSet() throws Exception {
-        userFinder = finderFactory.createNodeEntityFinder(User.class);
-    }
+    @Autowired
+    private GraphDatabaseContext graphDatabaseContext;
 
     @Override
     public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException, DataAccessException {
@@ -39,7 +36,7 @@ public class CineastsUserDetailsService implements UserDetailsService, Initializ
     }
 
     public User findUser(String login) {
-        return userFinder.findByPropertyValue("users","login",login);
+        return userRepository.findByPropertyValue(null,"login",login);
     }
 
 
@@ -60,7 +57,7 @@ public class CineastsUserDetailsService implements UserDetailsService, Initializ
         if (found!=null) throw new RuntimeException("Login already taken: "+login);
         if (name==null || name.isEmpty()) throw new RuntimeException("No name provided.");
         if (password==null || password.isEmpty()) throw new RuntimeException("No password provided.");
-        User user=new User(login,name,password,User.Roles.ROLE_USER).persist();
+        User user=userRepository.save(new User(login,name,password,User.Roles.ROLE_USER));
         setUserInSession(user);
         return user;
     }

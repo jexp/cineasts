@@ -24,7 +24,7 @@ import static org.junit.Assert.assertTrue;
 @Transactional
 public class MoviesRepositoryTest {
     @Autowired
-    MoviesRepository repository;
+    CineastsRepository repository;
 
     @Test
     public void testGetMovie() throws Exception {

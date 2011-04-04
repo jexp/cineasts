@@ -1,3 +1,4 @@
+<%--@elvariable id="recommendations" type="java.util.Map<Movie,Float>"--%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -40,11 +41,11 @@
       </c:choose>
     </div>
     <div class="span-7 last">
-        <c:set var="ratings" value="${user.ratings}"/>
       <div class="profile-feed">
         <div class="span-third">
           <h2>Your rated movies</h2>
         </div>
+          <c:set var="ratings" value="${user.ratings}"/>
         <div class="span-third last">
           <h2>${fn:length(ratings)}</h2>
         </div>
@@ -68,7 +69,35 @@
               </c:choose>
           </ul>
         <div class="break"></div>
+
+        <div class="span-third">
+          <h2>Your recommendations</h2>
+        </div>
+        <div class="span-third last">
+          <h2>${fn:length(recommendations)}</h2>
+        </div>
+          <ul class="rated-movies-list span-all last">
+              <c:choose>
+                  <c:when test="${not empty recommendations}">
+                      <c:forEach items="${recommendations}" var="recommendation">
+                          <c:set var="movie" value="${recommendation.key}"/>
+                          <c:set var="stars" value="${recommendation.value}"/>
+                          <li>
+                              <h4><a href="<c:url value="/movies/${movie.id}" />"><c:out value="${movie.title}"/>
+                                  (${movie.year}) - &quot;${movie.tagline}&quot;</a>
+                              <img class="rating" src="/images/rated_${stars}.png" alt="${stars} stars"/>
+                              </h4>
+                          </li>
+                      </c:forEach>
+                  </c:when>
+                  <c:otherwise>
+                      There are no recommendations for you, perhaps you have to add some friends?
+                  </c:otherwise>
+              </c:choose>
+          </ul>
+        <div class="break"></div>
       </div>
     </div>
+
   </body>
 </html>

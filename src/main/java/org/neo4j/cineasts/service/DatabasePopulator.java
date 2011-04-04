@@ -25,7 +25,7 @@ public class DatabasePopulator {
     @Autowired
     GraphDatabaseContext ctx;
     @Autowired
-    MoviesRepository repository;
+    CineastsRepository repository;
 
     @Autowired
     MovieDbImportService importService;

@@ -15,7 +15,9 @@ import java.util.Set;
 @NodeEntity
 public class User {
     private static final String SALT = "cewuiqwzie";
-    @Indexed(indexName = "users")
+    public static final String FRIEND = "FRIEND";
+    public static final String RATED = "RATED";
+    @Indexed
     String login;
     String name;
     String password;
@@ -36,14 +38,14 @@ public class User {
         return new Md5PasswordEncoder().encodePassword(password, SALT);
     }
 
-    @RelatedToVia(elementClass = Rating.class, type = "RATED")
+    @RelatedToVia(elementClass = Rating.class, type = RATED)
     Iterable<Rating> ratings;
 
-    @RelatedTo(elementClass = Movie.class, type = "RATED")
+    @RelatedTo(elementClass = Movie.class, type = RATED)
     Set<Movie> favorites;
 
 
-    @RelatedTo(elementClass = User.class, type = "FRIEND", direction = Direction.BOTH)
+    @RelatedTo(elementClass = User.class, type = FRIEND, direction = Direction.BOTH)
     Set<User> friends;
 
     public void addFriend(User friend) {
@@ -51,7 +53,7 @@ public class User {
     }
 
     public Rating rate(Movie movie, int stars, String comment) {
-        return relateTo(movie, Rating.class, "RATED").rate(stars, comment);
+        return relateTo(movie, Rating.class, RATED).rate(stars, comment);
     }
 
     public Collection<Rating> getRatings() {

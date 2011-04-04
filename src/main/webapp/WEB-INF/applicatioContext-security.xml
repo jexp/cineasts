@@ -22,13 +22,11 @@
     </security:http>
 
     <security:authentication-manager>
-        <security:authentication-provider user-service-ref="userDetailsService">
+        <security:authentication-provider user-service-ref="cineastsUserDetailsService">
             <security:password-encoder hash="md5">
                 <security:salt-source system-wide="cewuiqwzie"/>
             </security:password-encoder>
         </security:authentication-provider>
     </security:authentication-manager>
-
-    <bean id="userDetailsService" class="org.neo4j.cineasts.service.CineastsUserDetailsService"/>
 
 </beans>

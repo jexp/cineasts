@@ -3,9 +3,9 @@ package org.neo4j.cineasts.domain;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.neo4j.cineasts.repository.MovieRepository;
+import org.neo4j.cineasts.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.graph.neo4j.finder.FinderFactory;
-import org.springframework.data.graph.neo4j.finder.NodeFinder;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,12 +26,12 @@ import static org.junit.Assert.assertTrue;
 public class DomainTest {
 
     @Autowired
-    FinderFactory finderFactory;
-    protected NodeFinder<Movie> movieFinder;
+    protected MovieRepository movieRepository;
+    @Autowired
+    protected UserRepository userRepository;
 
     @Before
     public void setUp() throws Exception {
-        movieFinder = finderFactory.createNodeEntityFinder(Movie.class);
     }
 
     @Test
@@ -41,7 +41,7 @@ public class DomainTest {
 
         Role role = tomHanks.playedIn(forestGump, "Forrest");
 
-        Movie foundForestGump = this.movieFinder.findByPropertyValue("movies", "id", "1");
+        Movie foundForestGump = this.movieRepository.findByPropertyValue(null, "id", "1");
 
         assertEquals("created and looked up movie equal", forestGump, foundForestGump);
         Role firstRole = foundForestGump.getRoles().iterator().next();
@@ -52,7 +52,7 @@ public class DomainTest {
     @Test
     public void canFindMovieByTitleQuery() {
         Movie forestGump = new Movie("1", "Forrest Gump").persist();
-        Iterator<Movie> queryResults = movieFinder.findAllByQuery("search", "title", "Forre*").iterator();
+        Iterator<Movie> queryResults = movieRepository.findAllByQuery("search", "title", "Forre*").iterator();
         assertTrue("found movie by query",queryResults.hasNext());
         Movie foundMovie = queryResults.next();
         assertEquals("created and looked up movie equal", forestGump, foundMovie);
@@ -65,9 +65,8 @@ public class DomainTest {
         User user = new User("ich","Micha","password").persist();
         Rating awesome = user.rate(movie, 5, "Awesome");
 
-        NodeFinder<User> userFinder = finderFactory.createNodeEntityFinder(User.class);
 
-        User foundUser = userFinder.findByPropertyValue("users", "login", "ich");
+        User foundUser = userRepository.findByPropertyValue(null, "login", "ich");
         Rating rating = user.getRatings().iterator().next();
         assertEquals(awesome,rating);
         assertEquals("Awesome",rating.getComment());

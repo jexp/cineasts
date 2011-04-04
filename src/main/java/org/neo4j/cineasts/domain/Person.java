@@ -14,7 +14,7 @@ import java.util.Set;
  */
 @NodeEntity
 public class Person {
-    @Indexed(indexName = "people")
+    @Indexed
     String id;
     String name;
     private Date birthday;

@@ -6,7 +6,7 @@ import org.neo4j.cineasts.domain.Rating;
 import org.neo4j.cineasts.domain.User;
 import org.neo4j.cineasts.service.CineastsUserDetailsService;
 import org.neo4j.cineasts.service.DatabasePopulator;
-import org.neo4j.cineasts.service.MoviesRepository;
+import org.neo4j.cineasts.service.CineastsRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,13 +24,13 @@ import java.util.List;
 @Controller
 public class MovieController {
 
-    private MoviesRepository moviesRepository;
+    private CineastsRepository moviesRepository;
     private CineastsUserDetailsService userDetailsService;
     private DatabasePopulator populator;
     private static final Logger log = LoggerFactory.getLogger(MovieController.class);
 
     @Autowired
-    public MovieController(MoviesRepository moviesRepository, DatabasePopulator populator, CineastsUserDetailsService userDetailsService) {
+    public MovieController(CineastsRepository moviesRepository, DatabasePopulator populator, CineastsUserDetailsService userDetailsService) {
         this.moviesRepository = moviesRepository;
         this.populator = populator;
         this.userDetailsService = userDetailsService;

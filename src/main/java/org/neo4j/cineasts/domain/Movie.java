@@ -17,7 +17,7 @@ import static org.springframework.data.graph.core.Direction.INCOMING;
 @NodeEntity
 public class Movie {
 
-    @Indexed(indexName = "movies")
+    @Indexed
     String id;
 
     @Indexed(fulltext = true, indexName = "search")

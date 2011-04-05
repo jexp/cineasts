@@ -1,10 +1,10 @@
 package org.neo4j.cineasts.domain;
 
 import org.neo4j.helpers.collection.IteratorUtil;
-import org.springframework.data.annotation.Indexed;
 import org.springframework.data.graph.annotation.NodeEntity;
 import org.springframework.data.graph.annotation.RelatedTo;
 import org.springframework.data.graph.annotation.RelatedToVia;
+import org.springframework.data.graph.neo4j.annotation.Indexed;
 
 import java.util.*;
 

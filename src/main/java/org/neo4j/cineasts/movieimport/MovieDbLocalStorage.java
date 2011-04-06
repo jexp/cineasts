@@ -3,6 +3,8 @@ package org.neo4j.cineasts.movieimport;
 import org.codehaus.jackson.map.ObjectMapper;
 
 import java.io.*;
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 public class MovieDbLocalStorage {
@@ -35,18 +37,32 @@ public class MovieDbLocalStorage {
 
     public Map loadMovie(String movieId) {
         File storageFile = fileForMovie(movieId);
-        return (Map) loadJsonValue(storageFile);
+        return loadJsonValue(storageFile);
     }
 
-    private Object loadJsonValue(File storageFile) {
+    private Map loadJsonValue(File storageFile) {
         try {
-            return mapper.readValue(storageFile, Object.class);
+            final Object value = mapper.readValue(storageFile, Object.class);
+            if (value instanceof List) {
+                List list = (List) value;
+                if (list.isEmpty() || list.get(0).equals("Nothing found.")) return Collections.singletonMap("not_found", System.currentTimeMillis());
+                return asMap(list.get(0));
+            }
+            return asMap(value);
         } catch (Exception e) {
             throw new MovieDbException("Failed to load JSON from storage for file " + storageFile.getPath(), e);
         }
     }
 
-    public void storeMovie(String movieId, Map movieData) {
+    private Map asMap(Object value) {
+        if (value instanceof Map) {
+            return (Map) value;
+        }
+        final String typeInformation = value == null ? "null" : value.getClass().getSimpleName();
+        throw new MovieDbException("Wrong movie data format, expected Map/JSON-Object but was "+ typeInformation);
+    }
+
+    public void storeMovie(String movieId, Object movieData) {
         File storageFile = fileForMovie(movieId);
         storeJsonValue(movieData, storageFile);
     }
@@ -69,10 +85,10 @@ public class MovieDbLocalStorage {
 
     public Map loadPerson(String personId) {
         File storageFile = fileForPerson(personId);
-        return(Map)loadJsonValue(storageFile);
+        return loadJsonValue(storageFile);
     }
 
-    public void storePerson(String personId, Map personJson) {
+    public void storePerson(String personId, Object personJson) {
         File storageFile = fileForPerson(personId);
         storeJsonValue(personJson, storageFile);
     }

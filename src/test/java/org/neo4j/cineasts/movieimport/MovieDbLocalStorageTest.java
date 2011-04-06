@@ -7,7 +7,9 @@ import java.io.File;
 import java.util.Collections;
 import java.util.Map;
 
+import static java.util.Arrays.asList;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author mh
@@ -53,6 +55,17 @@ public class MovieDbLocalStorageTest {
     public void testLoadPerson() throws Exception {
         storage.storePerson(ID,DATA);
         assertEquals(DATA,storage.loadPerson(ID));
+    }
+    @Test
+    public void testLoadPersonFromList() throws Exception {
+        storage.storePerson(ID,asList(DATA));
+        assertEquals(DATA,storage.loadPerson(ID));
+    }
+    @Test
+    public void testLoadPersonFromInvalidList() throws Exception {
+        storage.storePerson(ID, asList("Nothing found."));
+        final Map personData = storage.loadPerson(ID);
+        assertTrue("person unexpectedly found", personData.containsKey("not_found"));
     }
 
     @Test

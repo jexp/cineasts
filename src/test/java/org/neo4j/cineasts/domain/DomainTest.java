@@ -66,11 +66,17 @@ public class DomainTest {
         Rating awesome = user.rate(movie, 5, "Awesome");
 
 
-        User foundUser = userRepository.findByPropertyValue(null, "login", "ich");
+        User foundUser = userRepository.findByPropertyValue("login", "ich");
         Rating rating = user.getRatings().iterator().next();
         assertEquals(awesome,rating);
         assertEquals("Awesome",rating.getComment());
         assertEquals(5,rating.getStars());
         assertEquals(5,movie.getStars(),0);
+    }
+    @Test
+    public void canFindUserByLogin() {
+        User user = new User("ich","Micha","password").persist();
+        User foundUser = userRepository.findByPropertyValue("login", "ich");
+        assertEquals(user, foundUser);
     }
 }

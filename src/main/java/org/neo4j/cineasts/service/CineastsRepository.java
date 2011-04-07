@@ -6,6 +6,7 @@ import org.neo4j.cineasts.domain.Rating;
 import org.neo4j.cineasts.domain.User;
 import org.neo4j.cineasts.repository.MovieRepository;
 import org.neo4j.cineasts.repository.PersonRepository;
+import org.neo4j.helpers.collection.ClosableIterable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,34 +24,30 @@ import java.util.Map;
 @Transactional
 public class CineastsRepository {
 
-    protected PersonRepository personRepository;
-    protected MovieRepository movieRepository;
+    @Autowired private PersonRepository personRepository;
+    @Autowired private MovieRepository movieRepository;
 
-    @Autowired
-    public CineastsRepository(MovieRepository movieRepository, PersonRepository personRepository) {
-        this.movieRepository = movieRepository;
-        this.personRepository = personRepository;
-    }
 
     public Movie getMovie(String id) {
-        return movieRepository.findByPropertyValue(null, "id", id);
+        return movieRepository.findByPropertyValue("id", id);
     }
 
     public List<Movie> findMovies(String query, int max) {
         if (query.isEmpty()) return Collections.emptyList();
         if (max < 1 || max > 1000) max = 100;
 
-        Iterable<Movie> searchResult = movieRepository.findAllByQuery("search", "title", query);
+        ClosableIterable<Movie> searchResult = movieRepository.findAllByQuery("search", "title", query);
         List<Movie> result=new ArrayList<Movie>(max);
         for (Movie movie : searchResult) {
             result.add(movie);
             if (--max == 0) break;
         }
+        searchResult.close();
         return result;
     }
 
     public Person getPerson(String id) {
-        return personRepository.findByPropertyValue(null,"id",id);
+        return personRepository.findByPropertyValue("id",id);
     }
 
     public Rating rateMovie(Movie movie, User user, int stars, String comment) {

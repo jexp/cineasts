@@ -4,7 +4,6 @@ import org.neo4j.cineasts.domain.User;
 import org.neo4j.cineasts.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
-import org.springframework.data.graph.neo4j.support.GraphDatabaseContext;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
@@ -25,9 +24,6 @@ public class CineastsUserDetailsService implements UserDetailsService {
     @Autowired
     private UserRepository userRepository;
 
-    @Autowired
-    private GraphDatabaseContext graphDatabaseContext;
-
     @Override
     public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException, DataAccessException {
         final User user = findUser(login);
@@ -36,7 +32,7 @@ public class CineastsUserDetailsService implements UserDetailsService {
     }
 
     public User findUser(String login) {
-        return userRepository.findByPropertyValue(null,"login",login);
+        return userRepository.findByPropertyValue("login",login);
     }
 
 

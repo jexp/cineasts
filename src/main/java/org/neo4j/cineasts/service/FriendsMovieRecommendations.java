@@ -3,24 +3,15 @@ package org.neo4j.cineasts.service;
 import org.neo4j.cineasts.domain.Movie;
 import org.neo4j.cineasts.domain.Rating;
 import org.neo4j.cineasts.domain.User;
-import org.neo4j.cineasts.repository.MovieRepository;
-import org.neo4j.graphdb.Path;
-import org.neo4j.graphdb.PropertyContainer;
-import org.neo4j.graphdb.Relationship;
-import org.neo4j.graphdb.traversal.Evaluation;
-import org.neo4j.graphdb.traversal.Evaluator;
 import org.neo4j.graphdb.traversal.Evaluators;
 import org.neo4j.graphdb.traversal.TraversalDescription;
-import org.neo4j.helpers.collection.IterableWrapper;
 import org.neo4j.kernel.Traversal;
 import org.neo4j.kernel.Uniqueness;
-import org.springframework.data.graph.neo4j.support.EntityPath;
-import org.springframework.data.graph.neo4j.support.GraphDatabaseContext;
+import org.springframework.data.graph.core.EntityPath;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.neo4j.graphdb.Direction.OUTGOING;
 import static org.neo4j.graphdb.DynamicRelationshipType.withName;
 
 /**
@@ -55,7 +46,8 @@ public class FriendsMovieRecommendations {
                 .uniqueness(Uniqueness.NODE_GLOBAL).relationships(withName(User.FRIEND))
                 .evaluator(Evaluators.toDepth(ratingDistance)).evaluator(Evaluators.excludeStartPosition());
 
-        Iterable<EntityPath<User,User>> friends = user.findAllPathsByTraversal(traversal);
+        Iterable result = user.findAllPathsByTraversal(traversal);
+        Iterable<EntityPath<User,User>> friends = (Iterable<EntityPath<User,User>>)result;
         for (EntityPath<User,User> path : friends) {
             int weight = ratingDistance - path.length();
             User friend = path.endEntity();

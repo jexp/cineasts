@@ -14,7 +14,8 @@
         <spring.version>3.0.5.RELEASE</spring.version>
         <slf4j.version>1.6.1</slf4j.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <neo4j.version>1.3.M05</neo4j.version>
+        <neo4j.version>1.3</neo4j.version>
+        <spring-data-graph.version>1.0.0.BUILD-SNAPSHOT</spring-data-graph.version>
         <aspectj.version>1.6.11.RELEASE</aspectj.version>
 		<org.slf4j-version>1.6.1</org.slf4j-version>
     </properties>
@@ -154,7 +155,7 @@
         <dependency>
           <groupId>org.springframework.data</groupId>
           <artifactId>spring-data-neo4j</artifactId>
-          <version>1.0.0.BUILD-SNAPSHOT</version>
+          <version>${spring-data-graph.version}</version>
         </dependency>
 
         <dependency>

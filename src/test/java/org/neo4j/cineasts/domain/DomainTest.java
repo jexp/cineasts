@@ -30,10 +30,6 @@ public class DomainTest {
     @Autowired
     protected UserRepository userRepository;
 
-    @Before
-    public void setUp() throws Exception {
-    }
-
     @Test
     public void actorCanPlayARoleInAMovie() {
         Person tomHanks = new Person("1","Tom Hanks").persist();
@@ -41,7 +37,7 @@ public class DomainTest {
 
         Role role = tomHanks.playedIn(forestGump, "Forrest");
 
-        Movie foundForestGump = this.movieRepository.findByPropertyValue(null, "id", "1");
+        Movie foundForestGump = this.movieRepository.findByPropertyValue("id", "1");
 
         assertEquals("created and looked up movie equal", forestGump, foundForestGump);
         Role firstRole = foundForestGump.getRoles().iterator().next();

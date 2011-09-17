@@ -16,7 +16,7 @@ pageEncoding="UTF-8"%>
 		<h1>Login</h1>
 		<div class="error">${error}</div>
 		
-		<form action="/auth/register" method="post" >
+		<form action="<c:url value="/auth/register"/>" method="post" >
       <p>
         <label for="j_username">Login:</label>
         <input id="j_username" name="j_username" type="text" value="${j_username}"/>
@@ -32,6 +32,6 @@ pageEncoding="UTF-8"%>
       <input  type="submit" value="Register"/>
     </form>
     <br/>
-    <a href="/auth/login">Login</a>
+    <a href="<c:url value="/auth/login"/>">Login</a>
 	</body>
 </html>

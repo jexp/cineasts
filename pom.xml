@@ -49,6 +49,12 @@
 			<url>http://repository.jboss.org/maven2/</url>
 			<name>JBoss public available repo</name>
 		</repository>
+
+		<repository>
+ 		   <id>com.springsource.repository.bundles.release</id>
+    		<name>SpringSource Enterprise Bundle Repository - SpringSource Bundle Releases</name>
+    		<url>http://repository.springsource.com/maven/bundles/release</url>
+		</repository>
 	</repositories>
 
 	<pluginRepositories>
@@ -110,6 +116,12 @@
 			<artifactId>spring-tx</artifactId>
 			<version>${spring.version}</version>
 		</dependency>
+		
+		<dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-web</artifactId>
+			<version>${spring.version}</version>
+        </dependency>
 
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -144,9 +156,17 @@
 			<artifactId>jcl-over-slf4j</artifactId>
 			<version>${org.slf4j-version}</version>
 		</dependency>
-		<dependency>
+		<!--  Disabled for error: input packageImports must not contain duplicate items.
+		      Replaced by sfl4j-simple here below -->
+		<!--  dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-log4j12</artifactId>
+			<version>${org.slf4j-version}</version>
+			<scope>runtime</scope>
+		</dependency -->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-simple</artifactId>
 			<version>${org.slf4j-version}</version>
 			<scope>runtime</scope>
 		</dependency>
@@ -187,6 +207,7 @@
 			<version>2.5</version>
 			<scope>provided</scope>
 		</dependency>
+		
 		<dependency>
 			<groupId>javax.servlet.jsp</groupId>
 			<artifactId>jsp-api</artifactId>
@@ -239,7 +260,14 @@
 			<version>4.8.1</version>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId> javax.persistence</groupId>
+			<artifactId>persistence-api</artifactId>
+			<version>1.0</version>
+			<scope>provided</scope>
+		</dependency>
 	</dependencies>
+
 	<build>
 		<plugins>
 			<plugin>
@@ -253,7 +281,6 @@
 					<!--scanIntervalSeconds>1</scanIntervalSeconds -->
 				</configuration>
 			</plugin>
-
 			<plugin>
 				<!-- Must use java 1.5 or higher for annotations -->
 				<groupId>org.apache.maven.plugins</groupId>
@@ -279,6 +306,7 @@
 					<junitArtifactName>junit:junit</junitArtifactName>
 				</configuration>
 			</plugin>
+			
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>aspectj-maven-plugin</artifactId>

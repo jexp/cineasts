@@ -13,7 +13,7 @@
           <c:set var="image" value="${movie.imageUrl}"/>
           <c:if test="${empty image}"><c:set var="image" value="/images/movie-placeholder.png"/></c:if>
           <a class="thumbnail" href="<c:url value="/movies/${movie.id}" />"> <img src="<c:url value="${image}" />" /></a>
-            <a href="/movies/${movie.id}">${movie.title}</a> <img alt="${movie.stars} stars" src="/images/rated_${movie.stars}.png"/>
+            <a href="/movies/${movie.id}">${movie.title}</a> <img alt="${movie.stars} stars" src="<c:url value="/images/rated_${movie.stars}.png"/>"/>
             <p><c:out value="${movie.tagline}" escapeXml="true" /></p>
           </div>
         </li>

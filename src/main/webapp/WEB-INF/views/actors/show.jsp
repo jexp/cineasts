@@ -22,7 +22,7 @@
           <ul>
             <c:forEach items="${actor.roles}" var="role">
               <li>
-                <a href="/movies/${role.movie.id}"><c:out value="${role.movie.title}" /> as <c:out value="${role.name}" /> in <c:out value="${role.movie.year}"/></a><br/>
+                <a href="<c:url value="/movies/${role.movie.id}"/>"><c:out value="${role.movie.title}" /> as <c:out value="${role.name}" /> in <c:out value="${role.movie.year}"/></a><br/>
               </li>
             </c:forEach>
           </ul>

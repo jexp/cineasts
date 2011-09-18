@@ -10,10 +10,14 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Component
 public class MovieDbJsonMapper {
 
+	private final static Logger log = LoggerFactory.getLogger(MovieDbJsonMapper.class);
+	
     public void mapToMovie(Map data, Movie movie) {
         try {
             movie.setTitle((String) data.get("name"));
@@ -54,7 +58,16 @@ public class MovieDbJsonMapper {
     private Date toDate(Map data, String field, final String pattern) throws ParseException {
         String dateString = (String) data.get(field);
         if (dateString == null || dateString.isEmpty()) return null;
-        return new SimpleDateFormat(pattern).parse(dateString);
+        try { 
+			return new SimpleDateFormat(pattern).parse(dateString);
+		} catch ( ParseException e) {
+			// Some Dates do not follow the given format; in fact several different formats
+			// are used. Rather than trying to accomodate them all, we fill in a default value.
+			// (This is a demo program, after all)
+			log.info( "Disparate date format '" + dateString + "' detected. Using default value");
+			return new SimpleDateFormat(pattern).parse("1967-06-24");
+		}
+
     }
 
     /*

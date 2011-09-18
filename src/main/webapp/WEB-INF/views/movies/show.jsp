@@ -16,9 +16,9 @@
           <c:if test="${empty image}"><c:set var="image" value="/images/movie-placeholder.png"/></c:if>
           <div class="profile-image"><img src="<c:url value="${image}"/>"/></div>
           <div class="profile-header-details">          
-            <h2>${movie.title} (${movie.year}) <img src="/images/rated_${stars}.png" alt="${stars} stars"/></h2>
+            <h2>${movie.title} (${movie.year}) <img src="<c:url value="/images/rated_${stars}.png"/>" alt="${stars} stars"/></h2>
           </div>
-          <h3><${movie.tagline}</h3>
+          <h3>${movie.tagline}</h3>
           <div class="break"></div>
         </div>
 
@@ -130,14 +130,14 @@
                         var hidden = document.getElementById('rated');
                         hidden.value = n;
                         for (i = 1; i <= 5; i++) {
-                            document.getElementById("rated_" + i).src = (i <= n ) ? "/images/rating-active.png" : "/images/rating-disabled.png";
+                            document.getElementById("rated_" + i).src = (i <= n ) ? "<c:url value="/images/rating-active.png" />" : "<c:url value="/images/rating-disabled.png" />";
                         }
                     }
                 </script>
                 <form method="post" action="<c:url value="/movies/${movie.id}" />">
                     <h4>Give
                     <c:forEach begin="1" end="5" var="i">
-                    <a href="#" onClick="rate(${i});"><img src="/images/rating-active.png" id="rated_${i}"/></a>
+                    <a href="#" onClick="rate(${i});"><img src="<c:url value="/images/rating-active.png" />" id="rated_${i}"/></a>
                     </c:forEach>
                     to &quot;${movie.title}&quot; saying:
                     <input type="hidden" value="${userRating.stars}" name="rated" id="rated"/>
@@ -153,7 +153,7 @@
               <ul>
                 <c:forEach items="${movie.ratings}" var="rating">
                     <c:if test="${rating != userRating}">
-                    <li><img src="/images/rated_${rating.stars}.png" alt="${rating.stars} stars"/> by <a href="<c:url value="/user/${rating.user.login}" />">${rating.user.name}</a> who says: &quot;${rating.comment}&quot;</li>
+                    <li><img src="<c:url value="/images/rated_${rating.stars}.png"/>" alt="${rating.stars} stars"/> by <a href="<c:url value="/user/${rating.user.login}" />">${rating.user.name}</a> who says: &quot;${rating.comment}&quot;</li>
                     </c:if>
                 </c:forEach>
               </ul>

@@ -58,7 +58,7 @@
                           <li>
                               <h4><a href="<c:url value="/movies/${movie.id}" />"><c:out value="${movie.title}"/>
                                   (${movie.year}) - &quot;${rating.comment}&quot;</a>
-                              <img class="rating" src="/images/rated_${stars}.png" alt="${stars} stars"/>
+                              <img class="rating" src="<c:url value="/images/rated_${stars}.png" />" alt="${stars} stars"/>
                               </h4>
                           </li>
                       </c:forEach>

@@ -10,17 +10,25 @@ pageEncoding="UTF-8"%>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 		<title>Login</title>
+	
 	</head>
 	<body>
 	
 		<h1>Login</h1>
 		<div class="error">${error}</div>
 		
-		<form action="/j_spring_security_check" method="post" >
+		<form action="<c:url value="/j_spring_security_check"/>" method="post" >
       <p>
         <label for="j_username">Login:</label>
+         <c:if test="${not empty param.login_error}">
         <input id="j_username" name="j_username" type="text"
-          <c:if test="${not empty param.login_error}">value="${sessionScope['SPRING_SECURITY_LAST_USERNAME']}"</c:if>  />
+          value="${sessionScope['SPRING_SECURITY_LAST_USERNAME']}"
+        />
+        </c:if>
+         <c:if test="${empty param.login_error}">
+        <input id="j_username" name="j_username" type="text"
+        />
+        </c:if>
       </p>
       <p>
         <label for="j_password">Password:</label>
@@ -31,6 +39,6 @@ pageEncoding="UTF-8"%>
       </p>
       <input  type="submit" value="Login"/>
     </form><br/>
-    <a href="/auth/registerpage">Register</a>
+    <a href="registerpage">Register</a>
 	</body>
 </html>
